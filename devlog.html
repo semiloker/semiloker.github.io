@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <title>semiloker.com/devlog</title>
+</head>
+
+<body>
+    <div class="body_for_head"></div>
+    <div class="line-numbers">
+        1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>
+        11<br>12<br>13<br>14<br>15<br>16<br>17<br>18<br>19<br>20<br>
+        21<br>22<br>23<br>24<br>25<br>26<br>27<br>28<br>29<br>30<br>
+        31<br>32<br>33<br>34<br>35<br>36<br>37<br>38<br>39<br>40
+    </div>
+
+    <div class="navbar">
+        <a href="home.html" class="nav-btn">Home</a>
+        <a href="about.html" class="nav-btn">About</a>
+        <a href="devlog.html" class="nav-btn">Devlog</a>
+    </div>
+
+    <div class="construction-container">
+        <h1>// devlog under construction</h1>
+
+        <div class="ascii-construction">
+            <div class="construction-pre">
+                <div class="pong-header">
+                    <span class="pong-score"><span id="playerScore">0</span> | <span
+                            id="aiScore">0</span></span>
+                </div>
+                <canvas id="pongCanvas" width="500" height="300"></canvas>
+            </div>
+        </div>
+
+        <p class="construction-note">
+            ps: If you're reading this, it means. I haven't had time to start the devlog yet... :)
+        </p>
+
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+            <span class="progress-text">loading... 23%</span>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('pongCanvas');
+        const ctx = canvas.getContext('2d');
+        const playerScoreEl = document.getElementById('playerScore');
+        const aiScoreEl = document.getElementById('aiScore');
+
+        let autoPlay = true;
+        let playerControlled = false;
+
+        // Гравець
+        const player = {
+            x: 10,
+            y: canvas.height / 2 - 40,
+            width: 8,
+            height: 80,
+            speed: 6,
+            dy: 0
+        };
+
+        // AI
+        const ai = {
+            x: canvas.width - 18,
+            y: canvas.height / 2 - 40,
+            width: 8,
+            height: 80,
+            speed: 3.5
+        };
+
+        // М'яч
+        const ball = {
+            x: canvas.width / 2,
+            y: canvas.height / 2,
+            radius: 6,
+            speed: 4,
+            dx: 4,
+            dy: 4
+        };
+
+        let playerScore = 0;
+        let aiScore = 0;
+
+        // Клавіші
+        const keys = {};
+        window.addEventListener('keydown', (e) => {
+            if (['w', 'W', 's', 'S', 'ArrowUp', 'ArrowDown'].includes(e.key)) {
+                keys[e.key] = true;
+                playerControlled = true;
+                autoPlay = false;
+            }
+        });
+        window.addEventListener('keyup', (e) => {
+            keys[e.key] = false;
+        });
+
+        function drawRect(x, y, w, h, color) {
+            ctx.fillStyle = color;
+            ctx.fillRect(x, y, w, h);
+        }
+
+        function drawCircle(x, y, r, color) {
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.arc(x, y, r, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        function drawNet() {
+            for (let i = 0; i < canvas.height; i += 20) {
+                drawRect(canvas.width / 2 - 1, i, 2, 10, 'rgba(180, 170, 160, 0.3)');
+            }
+        }
+
+        function update() {
+            // Рух гравця
+            if (autoPlay) {
+                // Авто-гра: гравець також AI
+                const playerCenter = player.y + player.height / 2;
+                if (ball.x < canvas.width / 2) {
+                    if (playerCenter < ball.y - 20) {
+                        player.y += player.speed * 0.6;
+                    } else if (playerCenter > ball.y + 20) {
+                        player.y -= player.speed * 0.6;
+                    }
+                }
+            } else {
+                // Керування гравцем
+                if (keys['w'] || keys['W'] || keys['ArrowUp']) {
+                    player.y -= player.speed;
+                }
+                if (keys['s'] || keys['S'] || keys['ArrowDown']) {
+                    player.y += player.speed;
+                }
+            }
+
+            // Обмеження гравця
+            if (player.y < 0) player.y = 0;
+            if (player.y + player.height > canvas.height) player.y = canvas.height - player.height;
+
+            // AI рух
+            const aiCenter = ai.y + ai.height / 2;
+            if (ball.x > canvas.width / 2) {
+                if (aiCenter < ball.y - 20) {
+                    ai.y += ai.speed;
+                } else if (aiCenter > ball.y + 20) {
+                    ai.y -= ai.speed;
+                }
+            }
+
+            // Обмеження AI
+            if (ai.y < 0) ai.y = 0;
+            if (ai.y + ai.height > canvas.height) ai.y = canvas.height - ai.height;
+
+            // Рух м'яча
+            ball.x += ball.dx;
+            ball.y += ball.dy;
+
+            // Відбиття від верху/низу
+            if (ball.y - ball.radius < 0 || ball.y + ball.radius > canvas.height) {
+                ball.dy *= -1;
+            }
+
+            // Перевірка голів
+            if (ball.x - ball.radius < 0) {
+                aiScore++;
+                aiScoreEl.textContent = aiScore;
+                resetBall();
+            }
+            if (ball.x + ball.radius > canvas.width) {
+                playerScore++;
+                playerScoreEl.textContent = playerScore;
+                resetBall();
+            }
+
+            // Зіткнення з гравцем
+            if (ball.x - ball.radius < player.x + player.width &&
+                ball.y > player.y &&
+                ball.y < player.y + player.height &&
+                ball.dx < 0) {
+                ball.dx *= -1.05;
+                ball.dy += (Math.random() - 0.5) * 2;
+            }
+
+            // Зіткнення з AI
+            if (ball.x + ball.radius > ai.x &&
+                ball.y > ai.y &&
+                ball.y < ai.y + ai.height &&
+                ball.dx > 0) {
+                ball.dx *= -1.05;
+                ball.dy += (Math.random() - 0.5) * 2;
+            }
+        }
+
+        function resetBall() {
+            ball.x = canvas.width / 2;
+            ball.y = canvas.height / 2;
+            ball.speed = 4;
+            ball.dx = (Math.random() > 0.5 ? 1 : -1) * 4;
+            ball.dy = (Math.random() - 0.5) * 6;
+        }
+
+        function render() {
+            // Фон
+            drawRect(0, 0, canvas.width, canvas.height, 'rgba(0, 0, 0, 0.2)');
+
+            // Сітка
+            drawNet();
+
+            // Гравець
+            drawRect(player.x, player.y, player.width, player.height, 'rgb(215, 114, 97)');
+
+            // AI
+            drawRect(ai.x, ai.y, ai.width, ai.height, 'rgb(180, 170, 160)');
+
+            // М'яч
+            drawCircle(ball.x, ball.y, ball.radius, 'rgb(215, 114, 97)');
+        }
+
+        function gameLoop() {
+            update();
+            render();
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Автоматичний старт
+        gameLoop();
+    </script>
+</body>
+
+</html>
