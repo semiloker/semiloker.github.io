@@ -238,11 +238,11 @@ p {
 }
 
 .level-2::before {
-    content: "";
+    /* content: ""; */
     position: absolute;
-    left: -2px;
+    left: -100px;
     top: 10px;
-    width: 15px;
+    width: 100px;
     height: 2px;
     background-color: rgb(70, 70, 70);
     transition: background-color 0.3s;
@@ -266,9 +266,9 @@ p {
     content: "";
     position: absolute;
     left: -100px;
-    top: -20px;
+    top: -14px;
     width: 100px;
-    height: 35px;
+    height: 100%;
     border-left: 2px dashed rgba(100, 111, 114, 0.5);
     border-bottom: 2px dashed rgba(100, 111, 114, 0.5);
     border-bottom-left-radius: 8px;
@@ -299,3 +299,4 @@ p {
     background-color: rgb(70, 70, 70);
     z-index: -1;
 }
+
