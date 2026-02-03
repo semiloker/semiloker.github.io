@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="body.css">
     <link rel="stylesheet" href="devlog.css">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <title>semiloker.com/devlog</title>
@@ -17,6 +18,7 @@
         <a href="home.html" class="nav-btn">Home</a>
         <a href="about.html" class="nav-btn">About</a>
         <a href="devlog.html" class="nav-btn">Devlog</a>
+        <a href="roadmap.html" class="nav-btn">Roadmap</a>
     </div>
 
     <div class="construction-wrapper">
@@ -172,8 +174,7 @@
 </body>
 
 <script>
-    function updateLineNumbers() 
-    {
+    function updateLineNumbers() {
         const container = document.querySelector('.line-numbers');
         const bodyHeight = document.body.scrollHeight;
         const lineHeight = 19.2;
@@ -181,8 +182,7 @@
         const linesCount = Math.ceil(bodyHeight / lineHeight);
 
         let linesHTML = '';
-        for (let i = 1; i <= linesCount; i++) 
-        {
+        for (let i = 1; i <= linesCount; i++) {
             linesHTML += i + '<br>';
         }
 

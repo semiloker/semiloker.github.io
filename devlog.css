@@ -1,70 +1,3 @@
-body {
-    font-family: "Times New Roman", serif;
-    margin-left: 0px;
-    margin-top: 0px;
-    background-color: rgb(24, 14, 11);
-    display: flex;
-    flex-direction: column;
-
-    position: relative;
-    min-height: 100vh;
-}
-
-.body_for_head {
-    position: fixed;
-    left: 0px;
-    top: 0px;
-    height: 23px;
-    width: 34px;
-    background-color: rgb(37, 39, 40);
-    z-index: 10;
-}
-
-.line-numbers {
-    position: absolute;
-
-    top: 0;
-    padding-top: 32px;
-    left: 0;
-    width: 24px;
-
-    height: 100%;
-
-    background-color: rgb(37, 39, 40);
-    color: rgb(100, 111, 114);
-    font-size: 12px;
-    line-height: 1.6;
-    text-align: right;
-    padding-right: 10px;
-    user-select: none;
-    z-index: 9;
-
-    overflow: hidden;
-}
-
-a {
-    color: rgb(180, 170, 160);
-    text-decoration: none;
-    font-size: 14px;
-    opacity: 0.7;
-    transition: opacity 0.2s;
-}
-
-a:hover {
-    opacity: 1;
-    text-decoration: underline;
-    color: rgb(215, 114, 97);
-}
-
-h1 {
-    color: white;
-    text-align: center;
-    margin-left: 100px;
-    margin-top: 80px;
-    max-width: 350px;
-    font-weight: 100;
-}
-
 .construction-wrapper {
     display: flex;
     align-items: flex-start;
@@ -94,50 +27,6 @@ h1 {
     line-height: 1;
     color: rgb(215, 114, 97);
     white-space: pre;
-}
-
-h2 {
-    color: white;
-    text-align: left;
-    font-size: 14px;
-    margin-left: 100px;
-    margin-top: 100px;
-    scroll-margin-top: 90px;
-}
-
-p {
-    color: rgb(215, 114, 97);
-    font-size: 14px;
-    line-height: 1.6;
-    max-width: 400px;
-    margin-left: 100px;
-    text-align: justify;
-}
-
-.navbar {
-    position: fixed;
-    top: 0;
-    left: 34px;
-    width: 100%;
-    background-color: rgb(37, 39, 40);
-    display: flex;
-    justify-content: left;
-    gap: 0px;
-    z-index: 10;
-}
-
-.nav-btn {
-    background-color: rgb(37, 39, 40);
-    color: rgb(100, 111, 114);
-    border: none;
-    padding: 4px 20px;
-    font-size: 12px;
-    cursor: pointer;
-    transition: background-color 0.1s, transform 0.1s;
-}
-
-.nav-btn:hover {
-    background-color: rgb(46, 52, 54);
 }
 
 .topic-tree {
@@ -327,4 +216,3 @@ p {
     background-color: rgb(70, 70, 70);
     z-index: -1;
 }
-
