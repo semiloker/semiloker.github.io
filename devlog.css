@@ -1,126 +1,32 @@
-body {
-    font-family: "Times New Roman", serif;
-    margin-left: 0px;
-    margin-top: 0px;
-    background-color: rgb(24, 14, 11);
+.construction-wrapper {
     display: flex;
-    flex-direction: column;
-    
-    position: relative;
-    min-height: 100vh;
-}
-
-.body_for_head {
-    position: fixed;
-    left: 0px;
-    top: 0px;
-    height: 23px;
-    width: 34px;
-    background-color: rgb(37, 39, 40);
-    z-index: 10;
-}
-
-.line-numbers {
-    position: absolute;
-    
-    top: 0;
-    padding-top: 32px;
-    left: 0;
-    width: 24px;
-    
-    height: 100%;
-    
-    background-color: rgb(37, 39, 40);
-    color: rgb(100, 111, 114);
-    font-size: 12px;
-    line-height: 1.6;
-    text-align: right;
-    padding-right: 10px;
-    user-select: none;
-    z-index: 9;
-
-    overflow: hidden; 
-}
-
-a {
-    color: rgb(180, 170, 160);
-    text-decoration: none;
-    font-size: 14px;
-    opacity: 0.7;
-    transition: opacity 0.2s;
-}
-
-a:hover {
-    opacity: 1;
-    text-decoration: underline;
-    color: rgb(215, 114, 97);
-}
-
-h1 {
-    color: white;
-    text-align: center;
+    align-items: flex-start;
+    gap: calc(100% - 65%);
     margin-left: 100px;
     margin-top: 80px;
-    max-width: 350px;
-    font-weight: 100;
 }
 
 .construction-container {
-    margin-left: 100px;
-    margin-top: 80px;
     max-width: 600px;
 }
 
 .construction-container h1 {
-    margin: 0;
-    margin-bottom: 40px;
-    text-align: left;
+    margin: 0 0 40px 0;
     font-size: 28px;
     font-family: 'Courier New', Courier, monospace;
 }
 
-h2 {
-    color: white;
-    text-align: left;
-    font-size: 14px;
-    margin-left: 100px;
-    margin-top: 100px;
-    scroll-margin-top: 90px;
+.ascii-art {
+    flex-shrink: 0;
+    /* margin-left: calc(100% - 60%); */
 }
 
-p {
+.ascii-pre {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 10px;
+    line-height: 1;
     color: rgb(215, 114, 97);
-    font-size: 14px;
-    line-height: 1.6;
-    max-width: 400px;
-    margin-left: 100px;
-    text-align: justify;
-}
-
-.navbar {
-    position: fixed;
-    top: 0;
-    left: 34px;
-    width: 100%;
-    background-color: rgb(37, 39, 40);
-    display: flex;
-    justify-content: left;
-    gap: 0px;
-    z-index: 10;
-}
-
-.nav-btn {
-    background-color: rgb(37, 39, 40);
-    color: rgb(100, 111, 114);
-    border: none;
-    padding: 4px 20px;
-    font-size: 12px;
-    cursor: pointer;
-    transition: background-color 0.1s, transform 0.1s;
-}
-
-.nav-btn:hover {
-    background-color: rgb(46, 52, 54);
+    white-space: pre;
 }
 
 .topic-tree {
@@ -207,8 +113,19 @@ p {
 
 .devlog-divider {
     margin-left: 100px;
-    margin-top: 60px;
-    margin-bottom: 60px;
+    margin-top: 120px;
+    margin-bottom: 0px;
+    width: calc(100% - 30%);
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(70, 70, 70, 0) 0%, rgba(215, 114, 97, 0.5) 50%, rgba(70, 70, 70, 0) 100%);
+    opacity: 0.6;
+}
+
+.devlog-divider-top {
+    margin-left: 100px;
+    margin-top: 20px;
+    margin-bottom: 0px;
     width: calc(100% - 30%);
     border: none;
     height: 1px;
@@ -238,11 +155,11 @@ p {
 }
 
 .level-2::before {
-    content: "";
+    /* content: ""; */
     position: absolute;
-    left: -2px;
+    left: -100px;
     top: 10px;
-    width: 15px;
+    width: 100px;
     height: 2px;
     background-color: rgb(70, 70, 70);
     transition: background-color 0.3s;
@@ -266,9 +183,9 @@ p {
     content: "";
     position: absolute;
     left: -100px;
-    top: -20px;
+    top: -14px;
     width: 100px;
-    height: 35px;
+    height: 100%;
     border-left: 2px dashed rgba(100, 111, 114, 0.5);
     border-bottom: 2px dashed rgba(100, 111, 114, 0.5);
     border-bottom-left-radius: 8px;

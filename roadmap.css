@@ -1,0 +1,57 @@
+.construction-container h1 {
+    /* margin: 0 0 40px 0; */
+    font-size: 28px;
+    font-family: 'Courier New', Courier, monospace;
+    margin-left: 125px;
+}
+
+.construction-container h1.build-state {
+    /* margin: 0 0 40px 0; */
+    font-size: 28px;
+    font-family: 'Courier New', Courier, monospace;
+    margin-left: 135px;
+    margin-top: 20px;
+    max-width: 500px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.terminal-block {
+    margin-left: 30px;
+}
+
+.terminal-text {
+    font-size: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    margin-left: 120px;
+    color: rgb(255, 255, 255);
+}
+
+.terminal-prefix {
+    opacity: 0.5;
+    margin-right: 36px;
+}
+
+.devlog-divider-top {
+    margin-left: 100px;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    width: calc(100% - 40%);
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(70, 70, 70, 0) 0%, rgba(215, 114, 97, 0.5) 50%, rgba(70, 70, 70, 0) 100%);
+    opacity: 0.6;
+}
+
+.devlog-divider-bottom {
+    margin-left: 100px;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    width: calc(100% - 10%);
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(70, 70, 70, 0) 0%, rgba(215, 114, 97, 0.5) 50%, rgba(70, 70, 70, 0) 100%);
+    opacity: 0.6;
+}
