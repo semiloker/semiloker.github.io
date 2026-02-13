@@ -38,7 +38,7 @@
     margin-left: 100px;
     margin-top: 15px;
     margin-bottom: 5px;
-    width: calc(100% - 40%);
+    width: calc(100% - 70%);
     border: none;
     height: 1px;
     background: linear-gradient(90deg, rgba(70, 70, 70, 0) 0%, rgba(215, 114, 97, 0.5) 50%, rgba(70, 70, 70, 0) 100%);
@@ -54,4 +54,193 @@
     height: 1px;
     background: linear-gradient(90deg, rgba(70, 70, 70, 0) 0%, rgba(215, 114, 97, 0.5) 50%, rgba(70, 70, 70, 0) 100%);
     opacity: 0.6;
+}
+
+.roadmap-wrapper {
+    margin-left: 100px;
+    width: calc(100% - 8%);
+    height: 700px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    position: relative;
+}
+
+.roadmap-canvas {
+    width: 2000px;
+    height: 1200px;
+    position: absolute;
+    cursor: grab;
+}
+
+/* nodes */
+
+.node {
+    position: absolute;
+    padding: 12px 20px;
+    background: rgba(20, 20, 20, 0.9);
+    border: 1px solid rgba(215, 114, 97, 0.6);
+    border-radius: 6px;
+    font-family: 'Courier New', monospace;
+    font-size: 16px;
+    color: white;
+    white-space: nowrap;
+}
+
+.node:hover {
+    background: rgba(25, 25, 25, 0.95);
+    transition: 0.3s;
+}
+
+.node-glow {
+    position: absolute;
+    inset: 0px;
+    pointer-events: none;
+    opacity: 0.8;
+}
+
+.node-glow rect {
+    fill: none;
+    stroke-width: 2;
+    stroke-dasharray: 60 120;
+    animation: borderFlow 4s linear infinite;
+    filter: blur(2px);
+}
+
+@keyframes borderFlow {
+    from {
+        stroke-dashoffset: 0;
+    }
+
+    to {
+        stroke-dashoffset: -180;
+    }
+}
+
+.node[data-status="done"] .node-glow rect {
+    stroke: #4fdc79;
+    filter: blur(2px) brightness(1.4);
+}
+
+.node[data-status="progress"] .node-glow rect {
+    stroke: #ffd45a;
+    filter: blur(2px) brightness(1.3);
+}
+
+.node[data-status="planned"] .node-glow rect {
+    stroke: #ff6b6b;
+    filter: blur(2px) brightness(1.2);
+}
+
+/* positions */
+
+.root {
+    left: 900px;
+    top: 80px;
+}
+
+.node-a {
+    left: 600px;
+    top: 260px;
+}
+
+.node-b {
+    left: 1200px;
+    top: 260px;
+}
+
+.node-c {
+    left: 450px;
+    top: 460px;
+}
+
+.node-d {
+    left: 750px;
+    top: 460px;
+}
+
+.node-e {
+    left: 1050px;
+    top: 460px;
+}
+
+.node-f {
+    left: 1350px;
+    top: 460px;
+}
+
+/* connection lines */
+
+.connections {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.connections path {
+    fill: none;
+    stroke: rgba(215, 114, 97, 0.6);
+    stroke-width: 2;
+}
+
+.node-tooltip {
+    position: fixed;
+    background: rgba(15, 15, 15, 0.95);
+    border: 1px solid rgba(215, 114, 97, 0.7);
+    padding: 8px 12px;
+    border-radius: 6px;
+
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    color: white;
+
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+
+    max-width: 260px;
+    z-index: 9999;
+}
+
+.roadmap-stats {
+    position: absolute;
+    right: 40px;
+    top: 120px;
+    font-family: "Courier New", monospace;
+    font-size: 15px;
+    color: #8aff8a;
+}
+
+.stat-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 6px;
+}
+
+.stat-label {
+    width: 130px;
+    color:rgb(255, 255, 255)
+    /* locks label width */
+}
+
+.stat-bar {
+    letter-spacing: 2px;
+}
+
+/* GREEN */
+.stat-done {
+    color: #00ff88;
+    text-shadow: 0 0 6px #00ff88;
+}
+
+/* YELLOW */
+.stat-progress {
+    color: #ffd500;
+    text-shadow: 0 0 6px #ffd500;
+}
+
+/* RED */
+.stat-planned {
+    color: #ff4d4d;
+    text-shadow: 0 0 6px #ff4d4d;
 }

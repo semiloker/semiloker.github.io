@@ -30,6 +30,26 @@
         <h1 class="build-state">// build state: experimental</h1>
     </div>
 
+    <div class="roadmap-stats" id="roadmapStats">
+
+        <div class="stat-row">
+            <span class="stat-label">> complete:</span>
+            <span class="stat-bar stat-done" id="stat-done"></span>
+        </div>
+
+        <div class="stat-row">
+            <span class="stat-label">> in progress:</span>
+            <span class="stat-bar stat-progress" id="stat-progress"></span>
+        </div>
+
+        <div class="stat-row">
+            <span class="stat-label">> planned:</span>
+            <span class="stat-bar stat-planned" id="stat-planned"></span>
+        </div>
+
+    </div>
+
+
     <hr class="devlog-divider-top">
 
     <div class="terminal-block">
@@ -41,8 +61,242 @@
         </p>
     </div>
 
-    <hr class="devlog-divider-bottom">
-    
+    <!-- <hr class="devlog-divider-bottom"> -->
+
+    <div class="roadmap-wrapper">
+        <div class="roadmap-canvas" id="roadmapCanvas">
+
+            <svg class="connections"></svg>
+
+            <div class="node root" id="root" data-status="done" data-connect="node-a,node-b"
+                data-description="Main engine architecture">
+                Engine Core
+            </div>
+
+            <div class="node node-a" id="node-a" data-status="progress" data-connect="node-c,node-d">
+                Rendering
+            </div>
+
+            <div class="node node-b" id="node-b" data-status="planned" data-connect="node-e,node-f">
+                Physics
+            </div>
+
+            <div class="node node-c" id="node-c" data-status="planned">OpenGL backend</div>
+            <div class="node node-d" id="node-d" data-status="planned">Lighting</div>
+            <div class="node node-e" id="node-e" data-status="planned">Collision</div>
+            <div class="node node-f" id="node-f" data-status="planned">Rigid bodies</div>
+
+        </div>
+    </div>
+
+
 </body>
+
+<script>
+    const canvas = document.getElementById("roadmapCanvas");
+    const svg = canvas.querySelector(".connections");
+
+    function center(el) {
+        const rect = el.getBoundingClientRect();
+        const parent = canvas.getBoundingClientRect();
+
+        return {
+            x: rect.left + rect.width / 2 - parent.left,
+            y: rect.top + rect.height / 2 - parent.top
+        };
+    }
+
+    function drawConnections() {
+
+        svg.innerHTML = "";
+
+        document.querySelectorAll(".node").forEach(node => {
+
+            const targets = node.dataset.connect;
+            if (!targets) return;
+
+            targets.split(",").forEach(id => {
+
+                const target = document.getElementById(id.trim());
+                if (!target) return;
+
+                const a = center(node);
+                const b = center(target);
+
+                // контрольні точки Bezier
+                const dx = Math.abs(b.x - a.x) * 0.5;
+
+                const c1x = a.x;
+                const c1y = a.y + dx;
+
+                const c2x = b.x;
+                const c2y = b.y - dx;
+
+                const path = document.createElementNS(
+                    "http://www.w3.org/2000/svg",
+                    "path"
+                );
+
+                const d = `
+                M ${a.x} ${a.y}
+                C ${c1x} ${c1y},
+                  ${c2x} ${c2y},
+                  ${b.x} ${b.y}
+            `;
+
+                path.setAttribute("d", d);
+
+                svg.appendChild(path);
+
+            });
+        });
+    }
+
+    drawConnections();
+    window.addEventListener("resize", drawConnections);
+</script>
+
+<script>
+    function generateBar(percent, totalBlocks = 10) {
+
+        const filled = Math.round((percent / 100) * totalBlocks);
+        const empty = totalBlocks - filled;
+
+        const bar =
+            "█".repeat(filled) +
+            "░".repeat(empty);
+
+        return `[${bar}] ${percent}%`;
+    }
+
+    function updateRoadmapStats() {
+
+        const nodes = document.querySelectorAll(".node");
+
+        let done = 0;
+        let progress = 0;
+        let planned = 0;
+
+        nodes.forEach(node => {
+
+            const status = node.dataset.status;
+
+            if (status === "done") done++;
+            else if (status === "progress") progress++;
+            else planned++;
+        });
+
+        const total = nodes.length || 1;
+
+        const donePercent = Math.round((done / total) * 100);
+        const progressPercent = Math.round((progress / total) * 100);
+        const plannedPercent = Math.round((planned / total) * 100);
+
+        document.getElementById("stat-done").textContent =
+            generateBar(donePercent);
+
+        document.getElementById("stat-progress").textContent =
+            generateBar(progressPercent);
+
+        document.getElementById("stat-planned").textContent =
+            generateBar(plannedPercent);
+    }
+
+    updateRoadmapStats();
+</script>
+
+<script>
+    let isDragging = false;
+    let startX, startY;
+    let offsetX = 0;
+    let offsetY = 0;
+
+    canvas.addEventListener("mousedown", (e) => {
+        isDragging = true;
+        startX = e.clientX - offsetX;
+        startY = e.clientY - offsetY;
+    });
+
+    document.addEventListener("mouseup", () => {
+        isDragging = false;
+    });
+
+    document.addEventListener("mousemove", (e) => {
+        if (!isDragging) return;
+
+        offsetX = e.clientX - startX;
+        offsetY = e.clientY - startY;
+
+        canvas.style.transform =
+            `translate(${offsetX}px, ${offsetY}px)`;
+
+        drawConnections();
+    });
+</script>
+
+<script>
+    const tooltip = document.createElement("div");
+    tooltip.className = "node-tooltip";
+    document.body.appendChild(tooltip);
+
+    document.querySelectorAll(".node").forEach(node => {
+
+        node.addEventListener("mouseenter", e => {
+
+            const text = node.dataset.description;
+            if (!text) return;
+
+            tooltip.textContent = text;
+            tooltip.style.opacity = 1;
+        });
+
+        node.addEventListener("mouseleave", () => {
+            tooltip.style.opacity = 0;
+        });
+
+        node.addEventListener("mousemove", e => {
+
+            tooltip.style.left = e.clientX + 15 + "px";
+            tooltip.style.top = e.clientY + 15 + "px";
+
+        });
+
+    });
+</script>
+
+<script>
+    function addNodeGlow() {
+
+        document.querySelectorAll(".node").forEach(node => {
+
+            if (node.querySelector(".node-glow")) return;
+
+            const svg = document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "svg"
+            );
+
+            svg.classList.add("node-glow");
+            svg.setAttribute("width", "100%");
+            svg.setAttribute("height", "100%");
+
+            const rect = document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "rect"
+            );
+
+            rect.setAttribute("x", "0");
+            rect.setAttribute("y", "0");
+            rect.setAttribute("width", "100%");
+            rect.setAttribute("height", "100%");
+            rect.setAttribute("rx", "6");
+
+            svg.appendChild(rect);
+            node.appendChild(svg);
+        });
+    }
+
+    addNodeGlow();
+</script>
 
 </html>
