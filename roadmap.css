@@ -138,35 +138,62 @@
     top: 80px;
 }
 
-.node-a {
-    left: 600px;
-    top: 260px;
-}
+/* =========================================
+   EPIC 1: ENGINE CORE (System Foundation)
+   Starts top-left, cascades down diagonal
+   ========================================= */
+#epic-core { left: 80px; top: 40px; }     /* Main Node */
 
-.node-b {
-    left: 1200px;
-    top: 260px;
-}
+/* Sub-tasks */
+#sub-core-1 { left: 210px; top: 140px; }  /* Project Setup */
+#sub-core-2 { left: 250px; top: 240px; }  /* Window Context */
+#sub-core-3 { left: 290px; top: 340px; }  /* Input System */
 
-.node-c {
-    left: 450px;
-    top: 460px;
-}
 
-.node-d {
-    left: 750px;
-    top: 460px;
-}
+/* =========================================
+   EPIC 2: RENDERING PIPELINE (Central)
+   Main node in the middle, subs around it
+   ========================================= */
+#epic-render { left: 600px; top: 480px; } /* Main Node */
 
-.node-e {
-    left: 1050px;
-    top: 460px;
-}
+/* Sub-tasks */
+#sub-ren-2 { left: 900px; top: 480px; }   /* Mesh & Buffers (Right of main) */
+#sub-ren-1 { left: 750px; top: 620px; }   /* Shader Wrapper (Below main) */
+#sub-ren-3 { left: 750px; top: 760px; }   /* Texture Loader (Below Shader) */
 
-.node-f {
-    left: 1350px;
-    top: 460px;
-}
+
+/* =========================================
+   EPIC 3: MATH & SPACE (Right Side)
+   Handles the 3D logic
+   ========================================= */
+#epic-math { left: 1200px; top: 480px; }  /* Main Node */
+
+/* Sub-tasks */
+#sub-math-1 { left: 1200px; top: 620px; } /* Matrices (Below main) */
+#sub-math-2 { left: 1050px; top: 900px; } /* Camera (Shifted left-down) */
+
+
+/* =========================================
+   EPIC 4: LIGHTING & SHADING (Bottom Right)
+   Visuals branch
+   ========================================= */
+#epic-light { left: 1200px; top: 760px; } /* Main Node */
+
+/* Sub-tasks */
+#sub-light-1 { left: 1350px; top: 900px; }  /* Phong Model */
+#sub-light-2 { left: 1350px; top: 1040px; } /* Material System */
+#sub-light-3 { left: 1350px; top: 1180px; } /* Light Casters */
+
+
+/* =========================================
+   EPIC 5: UI & ADVANCED (New items)
+   Placed at the very bottom so they fit
+   ========================================= */
+#epic-ui   { left: 1050px; top: 1180px; }
+
+/* Sub-tasks */
+#sub-ui-1  { left: 1050px; top: 1320px; } /* Shadows */
+#sub-ui-2  { left: 1350px; top: 1320px; } /* Text/Overlay */
 
 /* connection lines */
 

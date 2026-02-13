@@ -65,30 +65,107 @@
 
     <div class="roadmap-wrapper">
         <div class="roadmap-canvas" id="roadmapCanvas">
-
             <svg class="connections"></svg>
 
-            <div class="node root" id="root" data-status="done" data-connect="node-a,node-b"
-                data-description="Main engine architecture">
-                Engine Core
+            <div class="node root" id="epic-core" data-status="planned"
+                data-connect="epic-render,sub-core-1,sub-core-2,sub-core-3"
+                data-description="The foundation of the engine. Handling OS interaction, memory, and the main loop.">
+                <strong>PHASE 1:</strong><br>Engine Core
             </div>
 
-            <div class="node node-a" id="node-a" data-status="progress" data-connect="node-c,node-d">
-                Rendering
+            <div class="node" id="sub-core-1" data-status="planned"
+                data-description="Setup C++ project. Link GLEW (static), FreeGLUT, and OpenGL32.lib. create main.cpp.">
+                Project & Libs Setup
             </div>
 
-            <div class="node node-b" id="node-b" data-status="planned" data-connect="node-e,node-f">
-                Physics
+            <div class="node" id="sub-core-2" data-status="planned"
+                data-description="Initialize GLUT context, create a window (800x600), set DisplayMode (RGBA | DOUBLE | DEPTH).">
+                Window Context
             </div>
 
-            <div class="node node-c" id="node-c" data-status="planned">OpenGL backend</div>
-            <div class="node node-d" id="node-d" data-status="planned">Lighting</div>
-            <div class="node node-e" id="node-e" data-status="planned">Collision</div>
-            <div class="node node-f" id="node-f" data-status="planned">Rigid bodies</div>
+            <div class="node" id="sub-core-3" data-status="planned"
+                data-description="Create an Input Manager class. Abstract glutKeyboardFunc to store key states (isKeyPressed array).">
+                Input System
+            </div>
+
+
+            <div class="node" id="epic-render" data-status="planned"
+                data-connect="epic-math,sub-ren-1,sub-ren-2,sub-ren-3"
+                data-description="Abstracting raw OpenGL calls into reusable classes. Building the pipeline.">
+                <strong>PHASE 2:</strong><br>Rendering Backend
+            </div>
+
+            <div class="node" id="sub-ren-1" data-status="planned"
+                data-description="Create Shader Class. Load .vert/.frag files, compile source, link program, check errors.">
+                Shader Wrapper
+            </div>
+
+            <div class="node" id="sub-ren-2" data-status="planned"
+                data-description="Create Mesh Class. Manage VBO (Vertex Data), VAO (Attributes), and EBO (Indices).">
+                Mesh & Buffers
+            </div>
+
+            <div class="node" id="sub-ren-3" data-status="planned"
+                data-description="Implement Texture Class. Load images (stb_image), generate TextureID, handle wrapping/filtering.">
+                Texture Loader
+            </div>
+
+
+            <div class="node" id="epic-math" data-status="planned" data-connect="epic-light,sub-math-1,sub-math-2"
+                data-description="Moving from 2D screen coordinates to 3D world space using Linear Algebra.">
+                <strong>PHASE 3:</strong><br>3D Math & Space
+            </div>
+
+            <div class="node" id="sub-math-1" data-status="planned"
+                data-description="Integrate GLM. Implement Model-View-Projection (MVP) matrices in Vertex Shader.">
+                Matrices & Uniforms
+            </div>
+
+            <div class="node" id="sub-math-2" data-status="planned"
+                data-description="Create Camera Class (FPS Style). Calculate Euler Angles (Pitch/Yaw) from mouse movement.">
+                Camera Controller
+            </div>
+
+
+            <div class="node" id="epic-light" data-status="planned"
+                data-connect="epic-ui,sub-light-1,sub-light-2,sub-light-3"
+                data-description="Simulating light behavior to create realism and depth.">
+                <strong>PHASE 4:</strong><br>Lighting System
+            </div>
+
+            <div class="node" id="sub-light-1" data-status="planned"
+                data-description="Implement Phong Lighting Model (Ambient + Diffuse + Specular) in shaders.">
+                Basic Phong Model
+            </div>
+
+            <div class="node" id="sub-light-2" data-status="planned"
+                data-description="Create Material Struct in shader. Define properties like shininess, diffuse map, specular map.">
+                Material System
+            </div>
+
+            <div class="node" id="sub-light-3" data-status="planned"
+                data-description="Support different light casters: Directional Light (Sun), Point Lights (Bulbs), Spotlights (Flashlight).">
+                Light Casters
+            </div>
+
+
+            <div class="node" id="epic-ui" data-status="planned" data-connect="sub-ui-1,sub-ui-2"
+                data-description="User Interface and advanced rendering techniques.">
+                <strong>PHASE 5:</strong><br>UI & Advanced
+            </div>
+
+            <div class="node" id="sub-ui-1" data-status="planned"
+                data-description="Implement Shadow Mapping. Render scene to Depth Map Framebuffer, then project shadows in second pass.">
+                Shadow Mapping
+            </div>
+
+            <div class="node" id="sub-ui-2" data-status="planned"
+                data-description="Basic Text Rendering (FreeType) or 2D Orthographic overlay for FPS counter and debug info.">
+                Text & UI Overlay
+            </div>
 
         </div>
     </div>
-
 
 </body>
 
