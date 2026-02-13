@@ -30,6 +30,26 @@
         <h1 class="build-state">// build state: experimental</h1>
     </div>
 
+    <div class="roadmap-stats" id="roadmapStats">
+
+        <div class="stat-row">
+            <span class="stat-label">> complete:</span>
+            <span class="stat-bar stat-done" id="stat-done"></span>
+        </div>
+
+        <div class="stat-row">
+            <span class="stat-label">> in progress:</span>
+            <span class="stat-bar stat-progress" id="stat-progress"></span>
+        </div>
+
+        <div class="stat-row">
+            <span class="stat-label">> planned:</span>
+            <span class="stat-bar stat-planned" id="stat-planned"></span>
+        </div>
+
+    </div>
+
+
     <hr class="devlog-divider-top">
 
     <div class="terminal-block">
@@ -41,8 +61,319 @@
         </p>
     </div>
 
-    <hr class="devlog-divider-bottom">
-    
+    <!-- <hr class="devlog-divider-bottom"> -->
+
+    <div class="roadmap-wrapper">
+        <div class="roadmap-canvas" id="roadmapCanvas">
+            <svg class="connections"></svg>
+
+            <div class="node root" id="epic-core" data-status="planned"
+                data-connect="epic-render,sub-core-1,sub-core-2,sub-core-3"
+                data-description="The foundation of the engine. Handling OS interaction, memory, and the main loop.">
+                <strong>PHASE 1:</strong><br>Engine Core
+            </div>
+
+            <div class="node" id="sub-core-1" data-status="planned"
+                data-description="Setup C++ project. Link GLEW (static), FreeGLUT, and OpenGL32.lib. create main.cpp.">
+                Project & Libs Setup
+            </div>
+
+            <div class="node" id="sub-core-2" data-status="planned"
+                data-description="Initialize GLUT context, create a window (800x600), set DisplayMode (RGBA | DOUBLE | DEPTH).">
+                Window Context
+            </div>
+
+            <div class="node" id="sub-core-3" data-status="planned"
+                data-description="Create an Input Manager class. Abstract glutKeyboardFunc to store key states (isKeyPressed array).">
+                Input System
+            </div>
+
+
+            <div class="node" id="epic-render" data-status="planned"
+                data-connect="epic-math,sub-ren-1,sub-ren-2,sub-ren-3"
+                data-description="Abstracting raw OpenGL calls into reusable classes. Building the pipeline.">
+                <strong>PHASE 2:</strong><br>Rendering Backend
+            </div>
+
+            <div class="node" id="sub-ren-1" data-status="planned"
+                data-description="Create Shader Class. Load .vert/.frag files, compile source, link program, check errors.">
+                Shader Wrapper
+            </div>
+
+            <div class="node" id="sub-ren-2" data-status="planned"
+                data-description="Create Mesh Class. Manage VBO (Vertex Data), VAO (Attributes), and EBO (Indices).">
+                Mesh & Buffers
+            </div>
+
+            <div class="node" id="sub-ren-3" data-status="planned"
+                data-description="Implement Texture Class. Load images (stb_image), generate TextureID, handle wrapping/filtering.">
+                Texture Loader
+            </div>
+
+
+            <div class="node" id="epic-math" data-status="planned" data-connect="epic-light,sub-math-1,sub-math-2"
+                data-description="Moving from 2D screen coordinates to 3D world space using Linear Algebra.">
+                <strong>PHASE 3:</strong><br>3D Math & Space
+            </div>
+
+            <div class="node" id="sub-math-1" data-status="planned"
+                data-description="Integrate GLM. Implement Model-View-Projection (MVP) matrices in Vertex Shader.">
+                Matrices & Uniforms
+            </div>
+
+            <div class="node" id="sub-math-2" data-status="planned"
+                data-description="Create Camera Class (FPS Style). Calculate Euler Angles (Pitch/Yaw) from mouse movement.">
+                Camera Controller
+            </div>
+
+
+            <div class="node" id="epic-light" data-status="planned"
+                data-connect="epic-ui,sub-light-1,sub-light-2,sub-light-3"
+                data-description="Simulating light behavior to create realism and depth.">
+                <strong>PHASE 4:</strong><br>Lighting System
+            </div>
+
+            <div class="node" id="sub-light-1" data-status="planned"
+                data-description="Implement Phong Lighting Model (Ambient + Diffuse + Specular) in shaders.">
+                Basic Phong Model
+            </div>
+
+            <div class="node" id="sub-light-2" data-status="planned"
+                data-description="Create Material Struct in shader. Define properties like shininess, diffuse map, specular map.">
+                Material System
+            </div>
+
+            <div class="node" id="sub-light-3" data-status="planned"
+                data-description="Support different light casters: Directional Light (Sun), Point Lights (Bulbs), Spotlights (Flashlight).">
+                Light Casters
+            </div>
+
+
+            <div class="node" id="epic-ui" data-status="planned" data-connect="sub-ui-1,sub-ui-2"
+                data-description="User Interface and advanced rendering techniques.">
+                <strong>PHASE 5:</strong><br>UI & Advanced
+            </div>
+
+            <div class="node" id="sub-ui-1" data-status="planned"
+                data-description="Implement Shadow Mapping. Render scene to Depth Map Framebuffer, then project shadows in second pass.">
+                Shadow Mapping
+            </div>
+
+            <div class="node" id="sub-ui-2" data-status="planned"
+                data-description="Basic Text Rendering (FreeType) or 2D Orthographic overlay for FPS counter and debug info.">
+                Text & UI Overlay
+            </div>
+
+        </div>
+    </div>
+
 </body>
+
+<script>
+    const canvas = document.getElementById("roadmapCanvas");
+    const svg = canvas.querySelector(".connections");
+
+    function center(el) {
+        const rect = el.getBoundingClientRect();
+        const parent = canvas.getBoundingClientRect();
+
+        return {
+            x: rect.left + rect.width / 2 - parent.left,
+            y: rect.top + rect.height / 2 - parent.top
+        };
+    }
+
+    function drawConnections() {
+
+        svg.innerHTML = "";
+
+        document.querySelectorAll(".node").forEach(node => {
+
+            const targets = node.dataset.connect;
+            if (!targets) return;
+
+            targets.split(",").forEach(id => {
+
+                const target = document.getElementById(id.trim());
+                if (!target) return;
+
+                const a = center(node);
+                const b = center(target);
+
+                // контрольні точки Bezier
+                const dx = Math.abs(b.x - a.x) * 0.5;
+
+                const c1x = a.x;
+                const c1y = a.y + dx;
+
+                const c2x = b.x;
+                const c2y = b.y - dx;
+
+                const path = document.createElementNS(
+                    "http://www.w3.org/2000/svg",
+                    "path"
+                );
+
+                const d = `
+                M ${a.x} ${a.y}
+                C ${c1x} ${c1y},
+                  ${c2x} ${c2y},
+                  ${b.x} ${b.y}
+            `;
+
+                path.setAttribute("d", d);
+
+                svg.appendChild(path);
+
+            });
+        });
+    }
+
+    drawConnections();
+    window.addEventListener("resize", drawConnections);
+</script>
+
+<script>
+    function generateBar(percent, totalBlocks = 10) {
+
+        const filled = Math.round((percent / 100) * totalBlocks);
+        const empty = totalBlocks - filled;
+
+        const bar =
+            "█".repeat(filled) +
+            "░".repeat(empty);
+
+        return `[${bar}] ${percent}%`;
+    }
+
+    function updateRoadmapStats() {
+
+        const nodes = document.querySelectorAll(".node");
+
+        let done = 0;
+        let progress = 0;
+        let planned = 0;
+
+        nodes.forEach(node => {
+
+            const status = node.dataset.status;
+
+            if (status === "done") done++;
+            else if (status === "progress") progress++;
+            else planned++;
+        });
+
+        const total = nodes.length || 1;
+
+        const donePercent = Math.round((done / total) * 100);
+        const progressPercent = Math.round((progress / total) * 100);
+        const plannedPercent = Math.round((planned / total) * 100);
+
+        document.getElementById("stat-done").textContent =
+            generateBar(donePercent);
+
+        document.getElementById("stat-progress").textContent =
+            generateBar(progressPercent);
+
+        document.getElementById("stat-planned").textContent =
+            generateBar(plannedPercent);
+    }
+
+    updateRoadmapStats();
+</script>
+
+<script>
+    let isDragging = false;
+    let startX, startY;
+    let offsetX = 0;
+    let offsetY = 0;
+
+    canvas.addEventListener("mousedown", (e) => {
+        isDragging = true;
+        startX = e.clientX - offsetX;
+        startY = e.clientY - offsetY;
+    });
+
+    document.addEventListener("mouseup", () => {
+        isDragging = false;
+    });
+
+    document.addEventListener("mousemove", (e) => {
+        if (!isDragging) return;
+
+        offsetX = e.clientX - startX;
+        offsetY = e.clientY - startY;
+
+        canvas.style.transform =
+            `translate(${offsetX}px, ${offsetY}px)`;
+
+        drawConnections();
+    });
+</script>
+
+<script>
+    const tooltip = document.createElement("div");
+    tooltip.className = "node-tooltip";
+    document.body.appendChild(tooltip);
+
+    document.querySelectorAll(".node").forEach(node => {
+
+        node.addEventListener("mouseenter", e => {
+
+            const text = node.dataset.description;
+            if (!text) return;
+
+            tooltip.textContent = text;
+            tooltip.style.opacity = 1;
+        });
+
+        node.addEventListener("mouseleave", () => {
+            tooltip.style.opacity = 0;
+        });
+
+        node.addEventListener("mousemove", e => {
+
+            tooltip.style.left = e.clientX + 15 + "px";
+            tooltip.style.top = e.clientY + 15 + "px";
+
+        });
+
+    });
+</script>
+
+<script>
+    function addNodeGlow() {
+
+        document.querySelectorAll(".node").forEach(node => {
+
+            if (node.querySelector(".node-glow")) return;
+
+            const svg = document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "svg"
+            );
+
+            svg.classList.add("node-glow");
+            svg.setAttribute("width", "100%");
+            svg.setAttribute("height", "100%");
+
+            const rect = document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "rect"
+            );
+
+            rect.setAttribute("x", "0");
+            rect.setAttribute("y", "0");
+            rect.setAttribute("width", "100%");
+            rect.setAttribute("height", "100%");
+            rect.setAttribute("rx", "6");
+
+            svg.appendChild(rect);
+            node.appendChild(svg);
+        });
+    }
+
+    addNodeGlow();
+</script>
 
 </html>
