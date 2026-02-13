@@ -131,69 +131,44 @@
     filter: blur(2px) brightness(1.2);
 }
 
-/* positions */
-
 .root {
     left: 900px;
     top: 80px;
 }
 
-/* =========================================
-   EPIC 1: ENGINE CORE (System Foundation)
-   Starts top-left, cascades down diagonal
-   ========================================= */
-#epic-core { left: 80px; top: 40px; }     /* Main Node */
 
-/* Sub-tasks */
-#sub-core-1 { left: 210px; top: 140px; }  /* Project Setup */
-#sub-core-2 { left: 250px; top: 240px; }  /* Window Context */
-#sub-core-3 { left: 290px; top: 340px; }  /* Input System */
+#epic-core {
+    left: 80px;
+    top: 20px;
+}
 
+/* Main Node */
 
-/* =========================================
-   EPIC 2: RENDERING PIPELINE (Central)
-   Main node in the middle, subs around it
-   ========================================= */
-#epic-render { left: 600px; top: 480px; } /* Main Node */
+#epic-render {
+    left: 400px;
+    top: 40px;
+}
 
-/* Sub-tasks */
-#sub-ren-2 { left: 900px; top: 480px; }   /* Mesh & Buffers (Right of main) */
-#sub-ren-1 { left: 750px; top: 620px; }   /* Shader Wrapper (Below main) */
-#sub-ren-3 { left: 750px; top: 760px; }   /* Texture Loader (Below Shader) */
+/* Main Node */
 
+#epic-math {
+    left: 80px;
+    top: 90px;
+}
 
-/* =========================================
-   EPIC 3: MATH & SPACE (Right Side)
-   Handles the 3D logic
-   ========================================= */
-#epic-math { left: 1200px; top: 480px; }  /* Main Node */
+/* Main Node */
 
-/* Sub-tasks */
-#sub-math-1 { left: 1200px; top: 620px; } /* Matrices (Below main) */
-#sub-math-2 { left: 1050px; top: 900px; } /* Camera (Shifted left-down) */
+#epic-light {
+    left: 400px;
+    top: 110px;
+}
 
+/* Main Node */
 
-/* =========================================
-   EPIC 4: LIGHTING & SHADING (Bottom Right)
-   Visuals branch
-   ========================================= */
-#epic-light { left: 1200px; top: 760px; } /* Main Node */
-
-/* Sub-tasks */
-#sub-light-1 { left: 1350px; top: 900px; }  /* Phong Model */
-#sub-light-2 { left: 1350px; top: 1040px; } /* Material System */
-#sub-light-3 { left: 1350px; top: 1180px; } /* Light Casters */
-
-
-/* =========================================
-   EPIC 5: UI & ADVANCED (New items)
-   Placed at the very bottom so they fit
-   ========================================= */
-#epic-ui   { left: 1050px; top: 1180px; }
-
-/* Sub-tasks */
-#sub-ui-1  { left: 1050px; top: 1320px; } /* Shadows */
-#sub-ui-2  { left: 1350px; top: 1320px; } /* Text/Overlay */
+#epic-ui {
+    left: 80px;
+    top: 160px;
+}
 
 /* connection lines */
 
@@ -212,21 +187,79 @@
 
 .node-tooltip {
     position: fixed;
-    background: rgba(15, 15, 15, 0.95);
-    border: 1px solid rgba(215, 114, 97, 0.7);
-    padding: 8px 12px;
-    border-radius: 6px;
+
+    background: linear-gradient(
+        180deg,
+        rgba(18,18,18,0.96) 0%,
+        rgba(10,10,10,0.96) 100%
+    );
+
+    border: 1px solid rgba(215,114,97,0.65);
+    border-radius: 8px;
+
+    padding: 14px 16px;
+    min-width: 260px;
+    max-width: 420px;
 
     font-family: 'Courier New', monospace;
     font-size: 14px;
-    color: white;
+    color: #e6e6e6;
 
     pointer-events: none;
     opacity: 0;
-    transition: opacity 0.15s ease;
+    transform: translateY(4px);
 
-    max-width: 260px;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+
+    box-shadow:
+        0 0 12px rgba(215,114,97,0.25),
+        inset 0 0 8px rgba(255,255,255,0.03);
+
     z-index: 9999;
+}
+
+/* header title */
+.tooltip-title {
+    font-size: 15px;
+    color: white;
+    margin-bottom: 8px;
+}
+
+/* meta rows */
+.tooltip-row {
+    display: flex;
+    gap: 8px;
+    font-size: 13px;
+    margin-top: 3px;
+}
+
+.tooltip-label {
+    color: rgba(215,114,97,0.9);
+    min-width: 70px;
+}
+
+/* divider */
+.tooltip-divider {
+    height: 1px;
+    margin: 10px 0;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(215,114,97,0.6),
+        transparent
+    );
+}
+
+/* notes */
+.tooltip-notes {
+    font-size: 13px;
+    line-height: 1.4;
+    color: #cfcfcf;
+}
+
+.node-tooltip.show {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .roadmap-stats {
@@ -246,8 +279,8 @@
 
 .stat-label {
     width: 130px;
-    color:rgb(255, 255, 255)
-    /* locks label width */
+    color: rgb(255, 255, 255)
+        /* locks label width */
 }
 
 .stat-bar {
@@ -270,4 +303,49 @@
 .stat-planned {
     color: #ff4d4d;
     text-shadow: 0 0 6px #ff4d4d;
+}
+
+.tree-roadmap {
+    margin-left: 120px;
+    font-family: "Courier New", monospace;
+    font-size: 18px;
+    color: white;
+}
+
+.tree-task {
+    margin-top: 20px;
+    position: relative;
+}
+
+.tree-subtasks {
+    margin-left: 25px;
+    margin-top: 8px;
+}
+
+.tree-subtask {
+    margin-top: 6px;
+    cursor: pointer;
+    opacity: 0.85;
+}
+
+.tree-subtask:hover {
+    opacity: 1;
+}
+
+.tree-subtask[data-status="done"] {
+    color: #00ff88;
+}
+
+.tree-subtask[data-status="progress"] {
+    color: #ffd500;
+}
+
+.tree-subtask[data-status="planned"] {
+    color: rgb(215, 114, 97);
+
+}
+
+.tree-subtasks {
+    border-left: 1px dashed rgba(255, 255, 255, 0.2);
+    padding-left: 10px;
 }
