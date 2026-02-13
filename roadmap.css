@@ -289,20 +289,20 @@
 
 /* GREEN */
 .stat-done {
-    color: #00ff88;
-    text-shadow: 0 0 6px #00ff88;
+    color: #A5AB7B;
+    text-shadow: 0 0 6px #A5AB7B;
 }
 
 /* YELLOW */
 .stat-progress {
-    color: #ffd500;
-    text-shadow: 0 0 6px #ffd500;
+    color: #F6CC70;
+    text-shadow: 0 0 6px #F6CC70;
 }
 
 /* RED */
 .stat-planned {
-    color: #ff4d4d;
-    text-shadow: 0 0 6px #ff4d4d;
+    color: #F89D87;
+    text-shadow: 0 0 6px #F89D87;
 }
 
 .tree-roadmap {
@@ -333,16 +333,18 @@
 }
 
 .tree-subtask[data-status="done"] {
-    color: #00ff88;
+    color: #A5AB7B;
+    text-shadow: 0 0 2px #A5AB7B;
 }
 
 .tree-subtask[data-status="progress"] {
-    color: #ffd500;
+    color: #F6CC70;
+    text-shadow: 0 0 2px #F6CC70;
 }
 
 .tree-subtask[data-status="planned"] {
-    color: rgb(215, 114, 97);
-
+    color: #F89D87;
+    text-shadow: 0 0 2px #F89D87;
 }
 
 .tree-subtasks {
