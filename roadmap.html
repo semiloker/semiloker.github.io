@@ -67,103 +67,133 @@
         <div class="roadmap-canvas" id="roadmapCanvas">
             <svg class="connections"></svg>
 
-            <div class="node root" id="epic-core" data-status="planned"
-                data-connect="epic-render,sub-core-1,sub-core-2,sub-core-3"
-                data-description="The foundation of the engine. Handling OS interaction, memory, and the main loop.">
-                <strong>PHASE 1:</strong><br>Engine Core
+            <div class="tree-roadmap">
+
+                <!-- PHASE 1 -->
+                <div class="tree-task" id="epic-core" data-status="planned"
+                    data-description="The foundation of the engine. Handling OS interaction, memory, and the main loop.">
+
+                    [ Engine Core ]
+
+                    <div class="tree-subtasks">
+
+                        <div class="tree-subtask" id="sub-core-1" data-status="planned"
+                            data-description="Setup C++ project. Link GLEW (static), FreeGLUT, and OpenGL32.lib. create main.cpp.">
+                            |- Project & Libs Setup
+                        </div>
+
+                        <div class="tree-subtask" id="sub-core-2" data-status="planned"
+                            data-description="Initialize GLUT context, create a window (800x600), set DisplayMode (RGBA | DOUBLE | DEPTH).">
+                            |- Window Context
+                        </div>
+
+                        <div class="tree-subtask" id="sub-core-3" data-status="planned"
+                            data-description="Create an Input Manager class. Abstract glutKeyboardFunc to store key states (isKeyPressed array).">
+                            |- Input System
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <!-- PHASE 2 -->
+                <div class="tree-task" id="epic-render" data-status="planned"
+                    data-description="Abstracting raw OpenGL calls into reusable classes. Building the pipeline.">
+
+                    [ Rendering Backend ]
+
+                    <div class="tree-subtasks">
+
+                        <div class="tree-subtask" id="sub-ren-1" data-status="progress"
+                            data-description="Create Shader Class. Load .vert/.frag files, compile source, link program, check errors.">
+                            |- Shader Wrapper
+                        </div>
+
+                        <div class="tree-subtask" id="sub-ren-2" data-status="done"
+                            data-description="Create Mesh Class. Manage VBO (Vertex Data), VAO (Attributes), and EBO (Indices).">
+                            |- Mesh & Buffers
+                        </div>
+
+                        <div class="tree-subtask" id="sub-ren-3" data-status="planned"
+                            data-description="Implement Texture Class. Load images (stb_image), generate TextureID, handle wrapping/filtering.">
+                            |- Texture Loader
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <!-- PHASE 3 -->
+                <div class="tree-task" id="epic-math" data-status="planned"
+                    data-description="Moving from 2D screen coordinates to 3D world space using Linear Algebra.">
+
+                    [ 3D Math & Space ]
+
+                    <div class="tree-subtasks">
+
+                        <div class="tree-subtask" id="sub-math-1" data-status="planned"
+                            data-description="Integrate GLM. Implement Model-View-Projection (MVP) matrices in Vertex Shader.">
+                            |- Matrices & Uniforms
+                        </div>
+
+                        <div class="tree-subtask" id="sub-math-2" data-status="planned"
+                            data-description="Create Camera Class (FPS Style). Calculate Euler Angles (Pitch/Yaw) from mouse movement.">
+                            |- Camera Controller
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <!-- PHASE 4 -->
+                <div class="tree-task" id="epic-light" data-status="planned"
+                    data-description="Simulating light behavior to create realism and depth.">
+
+                    [ Lighting System ]
+
+                    <div class="tree-subtasks">
+
+                        <div class="tree-subtask" id="sub-light-1" data-status="planned"
+                            data-description="Implement Phong Lighting Model (Ambient + Diffuse + Specular) in shaders.">
+                            |- Basic Phong Model
+                        </div>
+
+                        <div class="tree-subtask" id="sub-light-2" data-status="planned"
+                            data-description="Create Material Struct in shader. Define properties like shininess, diffuse map, specular map.">
+                            |- Material System
+                        </div>
+
+                        <div class="tree-subtask" id="sub-light-3" data-status="planned"
+                            data-description="Support different light casters: Directional Light (Sun), Point Lights (Bulbs), Spotlights (Flashlight).">
+                            |- Light Casters
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <!-- PHASE 5 -->
+                <div class="tree-task" id="epic-ui" data-status="planned"
+                    data-description="User Interface and advanced rendering techniques.">
+
+                    [ UI & Advanced ]
+
+                    <div class="tree-subtasks">
+
+                        <div class="tree-subtask" id="sub-ui-1" data-status="planned"
+                            data-description="Implement Shadow Mapping. Render scene to Depth Map Framebuffer, then project shadows in second pass.">
+                            |- Shadow Mapping
+                        </div>
+
+                        <div class="tree-subtask" id="sub-ui-2" data-status="planned"
+                            data-description="Basic Text Rendering (FreeType) or 2D Orthographic overlay for FPS counter and debug info.">
+                            |- Text & UI Overlay
+                        </div>
+
+                    </div>
+                </div>
+
             </div>
-
-            <div class="node" id="sub-core-1" data-status="planned"
-                data-description="Setup C++ project. Link GLEW (static), FreeGLUT, and OpenGL32.lib. create main.cpp.">
-                Project & Libs Setup
-            </div>
-
-            <div class="node" id="sub-core-2" data-status="planned"
-                data-description="Initialize GLUT context, create a window (800x600), set DisplayMode (RGBA | DOUBLE | DEPTH).">
-                Window Context
-            </div>
-
-            <div class="node" id="sub-core-3" data-status="planned"
-                data-description="Create an Input Manager class. Abstract glutKeyboardFunc to store key states (isKeyPressed array).">
-                Input System
-            </div>
-
-
-            <div class="node" id="epic-render" data-status="planned"
-                data-connect="epic-math,sub-ren-1,sub-ren-2,sub-ren-3"
-                data-description="Abstracting raw OpenGL calls into reusable classes. Building the pipeline.">
-                <strong>PHASE 2:</strong><br>Rendering Backend
-            </div>
-
-            <div class="node" id="sub-ren-1" data-status="planned"
-                data-description="Create Shader Class. Load .vert/.frag files, compile source, link program, check errors.">
-                Shader Wrapper
-            </div>
-
-            <div class="node" id="sub-ren-2" data-status="planned"
-                data-description="Create Mesh Class. Manage VBO (Vertex Data), VAO (Attributes), and EBO (Indices).">
-                Mesh & Buffers
-            </div>
-
-            <div class="node" id="sub-ren-3" data-status="planned"
-                data-description="Implement Texture Class. Load images (stb_image), generate TextureID, handle wrapping/filtering.">
-                Texture Loader
-            </div>
-
-
-            <div class="node" id="epic-math" data-status="planned" data-connect="epic-light,sub-math-1,sub-math-2"
-                data-description="Moving from 2D screen coordinates to 3D world space using Linear Algebra.">
-                <strong>PHASE 3:</strong><br>3D Math & Space
-            </div>
-
-            <div class="node" id="sub-math-1" data-status="planned"
-                data-description="Integrate GLM. Implement Model-View-Projection (MVP) matrices in Vertex Shader.">
-                Matrices & Uniforms
-            </div>
-
-            <div class="node" id="sub-math-2" data-status="planned"
-                data-description="Create Camera Class (FPS Style). Calculate Euler Angles (Pitch/Yaw) from mouse movement.">
-                Camera Controller
-            </div>
-
-
-            <div class="node" id="epic-light" data-status="planned"
-                data-connect="epic-ui,sub-light-1,sub-light-2,sub-light-3"
-                data-description="Simulating light behavior to create realism and depth.">
-                <strong>PHASE 4:</strong><br>Lighting System
-            </div>
-
-            <div class="node" id="sub-light-1" data-status="planned"
-                data-description="Implement Phong Lighting Model (Ambient + Diffuse + Specular) in shaders.">
-                Basic Phong Model
-            </div>
-
-            <div class="node" id="sub-light-2" data-status="planned"
-                data-description="Create Material Struct in shader. Define properties like shininess, diffuse map, specular map.">
-                Material System
-            </div>
-
-            <div class="node" id="sub-light-3" data-status="planned"
-                data-description="Support different light casters: Directional Light (Sun), Point Lights (Bulbs), Spotlights (Flashlight).">
-                Light Casters
-            </div>
-
-
-            <div class="node" id="epic-ui" data-status="planned" data-connect="sub-ui-1,sub-ui-2"
-                data-description="User Interface and advanced rendering techniques.">
-                <strong>PHASE 5:</strong><br>UI & Advanced
-            </div>
-
-            <div class="node" id="sub-ui-1" data-status="planned"
-                data-description="Implement Shadow Mapping. Render scene to Depth Map Framebuffer, then project shadows in second pass.">
-                Shadow Mapping
-            </div>
-
-            <div class="node" id="sub-ui-2" data-status="planned"
-                data-description="Basic Text Rendering (FreeType) or 2D Orthographic overlay for FPS counter and debug info.">
-                Text & UI Overlay
-            </div>
-
         </div>
     </div>
 
@@ -248,7 +278,7 @@
 
     function updateRoadmapStats() {
 
-        const nodes = document.querySelectorAll(".node");
+        const nodes = document.querySelectorAll(".tree-subtask");
 
         let done = 0;
         let progress = 0;
@@ -312,33 +342,59 @@
 </script>
 
 <script>
-    const tooltip = document.createElement("div");
-    tooltip.className = "node-tooltip";
-    document.body.appendChild(tooltip);
+const tooltip = document.createElement("div");
+tooltip.className = "node-tooltip";
+document.body.appendChild(tooltip);
 
-    document.querySelectorAll(".node").forEach(node => {
+document.querySelectorAll(".tree-subtask").forEach(subtask => {
 
-        node.addEventListener("mouseenter", e => {
+    subtask.addEventListener("mouseenter", () => {
 
-            const text = node.dataset.description;
-            if (!text) return;
+        const title = subtask.textContent.replace("|-", "").trim();
+        const status = subtask.dataset.status || "unknown";
+        const notes = subtask.dataset.description || "—";
 
-            tooltip.textContent = text;
-            tooltip.style.opacity = 1;
-        });
+        // знайти parent tree-task
+        const parentTask = subtask.closest(".tree-task");
+        const depends = parentTask
+            ? parentTask.firstChild.textContent.trim()
+            : "—";
 
-        node.addEventListener("mouseleave", () => {
-            tooltip.style.opacity = 0;
-        });
+        tooltip.innerHTML = `
+            <div class="tooltip-title">${title}</div>
 
-        node.addEventListener("mousemove", e => {
+            <div class="tooltip-row">
+                <span class="tooltip-label">Status:</span>
+                <span>${status}</span>
+            </div>
 
-            tooltip.style.left = e.clientX + 15 + "px";
-            tooltip.style.top = e.clientY + 15 + "px";
+            <div class="tooltip-row">
+                <span class="tooltip-label">Depends:</span>
+                <span>${depends}</span>
+            </div>
 
-        });
+            <div class="tooltip-divider"></div>
 
+            <div class="tooltip-row">
+                <span class="tooltip-label">Notes:</span>
+            </div>
+
+            <div class="tooltip-notes">${notes}</div>
+        `;
+
+        tooltip.classList.add("show");
     });
+
+    subtask.addEventListener("mousemove", e => {
+        tooltip.style.left = e.clientX + 18 + "px";
+        tooltip.style.top = e.clientY + 18 + "px";
+    });
+
+    subtask.addEventListener("mouseleave", () => {
+        tooltip.classList.remove("show");
+    });
+
+});
 </script>
 
 <script>
