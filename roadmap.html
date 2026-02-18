@@ -65,8 +65,6 @@
 
     <div class="roadmap-wrapper">
         <div class="roadmap-canvas" id="roadmapCanvas">
-            <svg class="connections"></svg>
-
             <div class="tree-roadmap">
 
                 <!-- PHASE 1 -->
@@ -200,70 +198,6 @@
 </body>
 
 <script>
-    const canvas = document.getElementById("roadmapCanvas");
-    const svg = canvas.querySelector(".connections");
-
-    function center(el) {
-        const rect = el.getBoundingClientRect();
-        const parent = canvas.getBoundingClientRect();
-
-        return {
-            x: rect.left + rect.width / 2 - parent.left,
-            y: rect.top + rect.height / 2 - parent.top
-        };
-    }
-
-    function drawConnections() {
-
-        svg.innerHTML = "";
-
-        document.querySelectorAll(".node").forEach(node => {
-
-            const targets = node.dataset.connect;
-            if (!targets) return;
-
-            targets.split(",").forEach(id => {
-
-                const target = document.getElementById(id.trim());
-                if (!target) return;
-
-                const a = center(node);
-                const b = center(target);
-
-                // контрольні точки Bezier
-                const dx = Math.abs(b.x - a.x) * 0.5;
-
-                const c1x = a.x;
-                const c1y = a.y + dx;
-
-                const c2x = b.x;
-                const c2y = b.y - dx;
-
-                const path = document.createElementNS(
-                    "http://www.w3.org/2000/svg",
-                    "path"
-                );
-
-                const d = `
-                M ${a.x} ${a.y}
-                C ${c1x} ${c1y},
-                  ${c2x} ${c2y},
-                  ${b.x} ${b.y}
-            `;
-
-                path.setAttribute("d", d);
-
-                svg.appendChild(path);
-
-            });
-        });
-    }
-
-    drawConnections();
-    window.addEventListener("resize", drawConnections);
-</script>
-
-<script>
     function generateBar(percent, totalBlocks = 10) {
 
         const filled = Math.round((percent / 100) * totalBlocks);
@@ -313,54 +247,25 @@
 </script>
 
 <script>
-    let isDragging = false;
-    let startX, startY;
-    let offsetX = 0;
-    let offsetY = 0;
+    const tooltip = document.createElement("div");
+    tooltip.className = "node-tooltip";
+    document.body.appendChild(tooltip);
 
-    canvas.addEventListener("mousedown", (e) => {
-        isDragging = true;
-        startX = e.clientX - offsetX;
-        startY = e.clientY - offsetY;
-    });
+    document.querySelectorAll(".tree-subtask").forEach(subtask => {
 
-    document.addEventListener("mouseup", () => {
-        isDragging = false;
-    });
+        subtask.addEventListener("mouseenter", () => {
 
-    document.addEventListener("mousemove", (e) => {
-        if (!isDragging) return;
+            const title = subtask.textContent.replace("|-", "").trim();
+            const status = subtask.dataset.status || "unknown";
+            const notes = subtask.dataset.description || "—";
 
-        offsetX = e.clientX - startX;
-        offsetY = e.clientY - startY;
+            // знайти parent tree-task
+            const parentTask = subtask.closest(".tree-task");
+            const depends = parentTask
+                ? parentTask.firstChild.textContent.trim()
+                : "—";
 
-        canvas.style.transform =
-            `translate(${offsetX}px, ${offsetY}px)`;
-
-        drawConnections();
-    });
-</script>
-
-<script>
-const tooltip = document.createElement("div");
-tooltip.className = "node-tooltip";
-document.body.appendChild(tooltip);
-
-document.querySelectorAll(".tree-subtask").forEach(subtask => {
-
-    subtask.addEventListener("mouseenter", () => {
-
-        const title = subtask.textContent.replace("|-", "").trim();
-        const status = subtask.dataset.status || "unknown";
-        const notes = subtask.dataset.description || "—";
-
-        // знайти parent tree-task
-        const parentTask = subtask.closest(".tree-task");
-        const depends = parentTask
-            ? parentTask.firstChild.textContent.trim()
-            : "—";
-
-        tooltip.innerHTML = `
+            tooltip.innerHTML = `
             <div class="tooltip-title">${title}</div>
 
             <div class="tooltip-row">
@@ -382,54 +287,19 @@ document.querySelectorAll(".tree-subtask").forEach(subtask => {
             <div class="tooltip-notes">${notes}</div>
         `;
 
-        tooltip.classList.add("show");
-    });
-
-    subtask.addEventListener("mousemove", e => {
-        tooltip.style.left = e.clientX + 18 + "px";
-        tooltip.style.top = e.clientY + 18 + "px";
-    });
-
-    subtask.addEventListener("mouseleave", () => {
-        tooltip.classList.remove("show");
-    });
-
-});
-</script>
-
-<script>
-    function addNodeGlow() {
-
-        document.querySelectorAll(".node").forEach(node => {
-
-            if (node.querySelector(".node-glow")) return;
-
-            const svg = document.createElementNS(
-                "http://www.w3.org/2000/svg",
-                "svg"
-            );
-
-            svg.classList.add("node-glow");
-            svg.setAttribute("width", "100%");
-            svg.setAttribute("height", "100%");
-
-            const rect = document.createElementNS(
-                "http://www.w3.org/2000/svg",
-                "rect"
-            );
-
-            rect.setAttribute("x", "0");
-            rect.setAttribute("y", "0");
-            rect.setAttribute("width", "100%");
-            rect.setAttribute("height", "100%");
-            rect.setAttribute("rx", "6");
-
-            svg.appendChild(rect);
-            node.appendChild(svg);
+            tooltip.classList.add("show");
         });
-    }
 
-    addNodeGlow();
+        subtask.addEventListener("mousemove", e => {
+            tooltip.style.left = e.clientX + 18 + "px";
+            tooltip.style.top = e.clientY + 18 + "px";
+        });
+
+        subtask.addEventListener("mouseleave", () => {
+            tooltip.classList.remove("show");
+        });
+
+    });
 </script>
 
 </html>
