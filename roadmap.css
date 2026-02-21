@@ -18,6 +18,29 @@
     text-overflow: ellipsis;
 }
 
+.ascii-roadmap {
+    margin-left: 125px;
+    margin-top: 10px;
+}
+
+.ascii-pre {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 10px;
+    line-height: 1.2;
+    color: rgb(215, 114, 97);
+    white-space: pre;
+    animation: asciiFlicker 8s infinite;
+}
+
+@keyframes asciiFlicker {
+    0%, 100% { opacity: 1; }
+    92% { opacity: 1; }
+    93% { opacity: 0.8; }
+    94% { opacity: 1; }
+    95% { opacity: 0.9; }
+    96% { opacity: 1; }
+}
+
 .terminal-block {
     margin-left: 30px;
 }
@@ -58,18 +81,14 @@
 
 .roadmap-wrapper {
     margin-left: 100px;
-    width: calc(100% - 8%);
-    height: 700px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    overflow: hidden;
+    width: calc(100% - 30%);
     position: relative;
 }
 
 .roadmap-canvas {
-    width: 2000px;
-    height: 1200px;
-    position: absolute;
-    cursor: grab;
+    width: 100%;
+    min-height: 600px;
+    position: relative;
 }
 
 /* nodes */
