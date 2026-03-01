@@ -23,7 +23,7 @@
 
     <div class="construction-wrapper">
         <div class="construction-container">
-            <h1>// devlog. under construction</h1>
+            <h1>// devlog. Pixora Engine</h1>
         </div>
 
         <div class="ascii-art">
@@ -32,7 +32,8 @@
 --      / _ (_)_  _____  _ __ __ _     --
 --     / /_)/ \ \/ / _ \| '__/ _` |    --
 --    / ___/| |>  < (_) | | | (_| |    --
---    \/    |_/_/\_\___/|_|  \__,_|    --</pre>
+--    \/    |_/_/\_\___/|_|  \__,_|    --
+--                                     --</pre>
         </div>
     </div>
 
@@ -41,25 +42,28 @@
     <div class="tree-block">
         <h2 id="devlog-root" class="devlog-root">Devlog</h2>
         <p class="devlog-lead level-1">
-            This devlog documents the development process, architectural decisions,
-            mistakes, experiments, and technical findings.
+            Development log for Pixora — a modern 3D game engine built with OpenGL, GLUT, GLEW, and Dear ImGui.
+            This devlog documents the development process, architectural decisions, and technical findings.
         </p>
 
         <h2 id="intro" class="devlog-section">Introduction</h2>
         <div class="section-content">
             <p class="devlog-text level-2">
-                This project started as a small technical experiment and slowly evolved
-                into a full engine prototype.
+                Pixora started as a learning project to understand modern OpenGL rendering pipelines
+                and evolved into a full-featured 3D engine with SSAO, shadow mapping, and an interactive editor.
             </p>
 
             <p class="devlog-text level-2">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-                reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-                deserunt mollit anim id est laborum.
+                The engine is built entirely in C++17 with a focus on clean architecture,
+                reusable components, and real-time scene editing capabilities.
+                All dependencies are included locally for easy setup on Windows.
+            </p>
+
+            <p class="devlog-text level-2">
+                <strong>Current Version:</strong> 1.0.0 (Foundation Release)<br>
+                <strong>Last Update:</strong> March 2026<br>
+                <strong>Platform:</strong> Windows (MinGW-w64), Linux compatible<br>
+                <strong>Graphics API:</strong> OpenGL 4.5+
             </p>
         </div>
     </div>
@@ -67,89 +71,481 @@
     <hr class="devlog-divider">
 
     <div class="tree-block">
-        <h2 id="engine-root" class="devlog-root">Engine</h2>
+        <h2 id="engine-root" class="devlog-root">Engine Architecture</h2>
         <p class="devlog-lead level-1">
-            Core architecture, low-level systems, and platform-specific decisions.
+            Core systems, singleton managers, and the rendering pipeline.
         </p>
 
-        <h2 id="engine-structure" class="devlog-section">Project structure</h2>
+        <h2 id="engine-structure" class="devlog-section">Project Structure</h2>
         <p class="devlog-text level-2">
-            The repository is organized to keep runtime data, build artifacts, and
-            dependencies clearly separated.
+            The codebase follows a clear separation between source files, headers, and dependencies.
+            The <code>src/</code> directory contains all implementation files, while <code>include/</code>
+            holds the public API headers.
         </p>
 
         <p class="devlog-text level-3">
-            The <code>bin</code> directory contains runtime output, while
-            <code>build</code> is fully disposable.
+            <strong>src/</strong> — main.cpp, window.cpp, model_renderer.cpp, shader_manager.cpp,
+            ssao_manager.cpp, fbo_manager.cpp, light_manager.cpp, gizmo.cpp, ui_manager.cpp,
+            text_render.cpp, model_loader.cpp
         </p>
 
-        <h2 id="engine-build" class="devlog-section">Build system</h2>
+        <p class="devlog-text level-3">
+            <strong>include/</strong> — Corresponding headers plus bitmap.h, render_stats.h, stb_image.h
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>dependencies/</strong> — GLEW 2.1.0, FreeGLUT 3.6.0, GLM, imgui-docking,
+            and sample Models (scene.obj with textures)
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>build/</strong> — Compiled object files (.o). Safe to delete for full rebuild.
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>bin/</strong> — Final executable (app.exe) and runtime DLLs (glew32.dll, glut.dll)
+        </p>
+
+        <h2 id="engine-singletons" class="devlog-section">Singleton Managers</h2>
         <p class="devlog-text level-2">
-            CMake is used as the main configuration layer to handle cross-platform compilation.
+            The engine uses the singleton pattern for core systems to ensure global access
+            without passing references throughout the codebase.
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>Window</strong> — Main application window, input handling, camera control,
+            and the game loop. Manages GLUT callbacks and frame timing.
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>ModelRenderer</strong> — GPU mesh management, model instances, light system.
+            Handles both Legacy and Shader render modes.
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>ShaderManager</strong> — Shader program compilation, uniform management.
+            Contains main shader, depth shader, and SSAO shader programs.
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>FBOManager</strong> — Framebuffer object creation for shadow mapping
+            (2048x2048) and off-screen rendering passes.
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>SSAOManager</strong> — Multi-pass SSAO rendering: geometry pass, compute,
+            blur, and upsample. Configurable via SSAOConfig struct.
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>LightManager</strong> — Scene light storage, legacy LightConfig for
+            backward compatibility with older rendering code.
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>UIManager</strong> — Custom immediate-mode UI system with panels,
+            menus, buttons, sliders, and dark theme.
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>ModelLoader</strong> — OBJ/MTL file parsing with vertex hashing,
+            material indexing, and texture path resolution.
+        </p>
+
+        <h2 id="engine-build" class="devlog-section">Build System</h2>
+        <p class="devlog-text level-2">
+            A simple makefile handles compilation with MinGW-w64 on Windows.
+            The build process compiles all .cpp files in src/ to build/,
+            then links them into bin/app.exe.
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>Compiler:</strong> g++ with -std=c++17 -Wall -O2 flags
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>Include paths:</strong> include/, dependencies/glew-2.1.0/include,
+            dependencies/freeglut-3.6.0/include, dependencies/glm
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>Libraries:</strong> -lglew32 -lglut -lopengl32 -lglu32
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>Targets:</strong> <code>make</code> (build), <code>make clean</code> (remove .o),
+            <code>make fullclean</code> (remove .o and .exe)
         </p>
 
         <h2 id="engine-deps" class="devlog-section">Dependencies</h2>
         <p class="devlog-text level-2">
-            External libraries are managed via git submodules to ensure strict version consistency.
+            All third-party libraries are included in the dependencies/ folder
+            for zero-setup compilation on Windows.
         </p>
+
         <p class="devlog-text level-3">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-            nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-            deserunt mollit anim id est laborum.
+            <strong>GLEW 2.1.0</strong> — OpenGL Extension Wrangler. Handles extension loading
+            for OpenGL 4.5+ features. Pre-compiled libraries included (Release/x64).
         </p>
+
         <p class="devlog-text level-3">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-            nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-            deserunt mollit anim id est laborum.
+            <strong>FreeGLUT 3.6.0</strong> — OpenGL Utility Toolkit. Window creation,
+            input handling, and main loop management. Provides cross-platform abstraction.
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>GLM</strong> — OpenGL Mathematics. Header-only vector/matrix library
+            with GLSL-like syntax. Used for all 3D math operations.
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>Dear ImGui (docking)</strong> — Inspiration for UI system architecture.
+            The custom UIManager follows ImGui's immediate-mode design patterns.
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>stb_image.h</strong> — Single-header image loading library.
+            Supports PNG, JPG, BMP, TGA, PSD for texture loading.
         </p>
     </div>
 
     <hr class="devlog-divider">
 
     <div class="tree-block">
-        <h2 id="graphics-root" class="devlog-root">Graphics</h2>
+        <h2 id="graphics-root" class="devlog-root">Graphics & Rendering</h2>
         <p class="devlog-lead level-1">
-            Rendering pipeline, shader management, and visual fidelity systems.
+            Rendering pipeline, shader programs, and post-processing effects.
         </p>
 
-        <h2 id="graphics-opengl" class="devlog-section">OpenGL</h2>
+        <h2 id="graphics-pipeline" class="devlog-section">Rendering Pipeline</h2>
         <p class="devlog-text level-2">
-            The renderer is built on top of OpenGL 4.5, utilizing DSA (Direct State Access)
-            to reduce driver overhead.
-        </p>
-        <p class="devlog-text level-3">
-            State caching is implemented to avoid redundant API calls during the render loop.
+            The engine supports two render modes: <strong>Legacy</strong> (immediate-mode OpenGL)
+            and <strong>Shader</strong> (modern VAO/VBO/EBO with GLSL).
         </p>
 
-        <h2 id="graphics-assets" class="devlog-section">Assets</h2>
-        <p class="devlog-text level-2">
-            Asset hot-reloading is supported for shaders and textures in debug mode.
-        </p>
         <p class="devlog-text level-3">
-            Textures are compressed into custom binary formats for faster loading times.
+            <strong>Frame Loop:</strong> Input → Camera Update → Shadow Pass → Geometry Pass →
+            SSAO Compute → SSAO Blur → SSAO Upsample → Main Render → UI Render → Present
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>Shadow Pass:</strong> Renders scene from light perspective to 2048x2048
+            depth texture. Used for shadow comparison in main fragment shader.
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>Geometry Pass (SSAO):</strong> Outputs world-space normals and view-space
+            depth to FBO. Half-resolution for performance (320x180 at 640x360 render).
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>SSAO Compute:</strong> 32-sample random kernel, hemisphere sampling,
+            depth comparison with 0.025 bias. Outputs occlusion factor per pixel.
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>SSAO Blur:</strong> Edge-aware bilateral filter with depthSigma=0.002
+            and colorSigma=1.0. Smooths noise while preserving depth edges.
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>SSAO Upsample:</strong> Depth-aware or joint bilateral upsampling
+            reconstructs full-resolution SSAO from half-resolution buffer.
+        </p>
+
+        <h2 id="graphics-shaders" class="devlog-section">Shader Programs</h2>
+        <p class="devlog-text level-2">
+            Shaders are compiled from source strings embedded in shader_manager.cpp.
+            The ShaderProgram struct handles compilation, linking, and uniform management.
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>Main Shader:</strong> MVP transformation, normal matrix, Phong lighting
+            with shadows, texture sampling with normal maps.
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>Depth Shader:</strong> Simple light-space MVP transform, depth-only
+            output for shadow mapping.
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>SSAO Geometry Shader:</strong> Vertex: standard MVP. Fragment: outputs
+            world normal and view depth to textures.
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>SSAO Compute Shader:</strong> Fullscreen quad, samples normal/depth
+            texture, computes occlusion with random kernel.
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>SSAO Blur Shader:</strong> Bilateral filter kernel (5x5), weights
+            based on depth and color similarity.
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>SSAO Upsample Shader:</strong> Reconstructs full-res SSAO using
+            depth-aware interpolation from half-res buffer.
+        </p>
+
+        <h2 id="graphics-ssao" class="devlog-section">SSAO Configuration</h2>
+        <p class="devlog-text level-2">
+            SSAO parameters are exposed via SSAOConfig struct and editable in the Debug Panel.
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>radius:</strong> 0.5f — Sample sphere radius around each pixel
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>bias:</strong> 0.025f — Depth bias to prevent self-occlusion artifacts
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>scale:</strong> 1.0f — SSAO intensity multiplier
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>kernelSize:</strong> 32 — Number of random samples (higher = better quality)
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>depthSigma:</strong> 0.002f — Blur filter depth sensitivity
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>colorSigma:</strong> 1.0f — Blur filter color sensitivity
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>upsampleMode:</strong> 0=Depth-Aware, 1=Joint Bilateral
+        </p>
+
+        <h2 id="graphics-lighting" class="devlog-section">Lighting System</h2>
+        <p class="devlog-text level-2">
+            Four light types with configurable properties. Lights are rendered with
+            gizmo handles for interactive editing.
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>Directional:</strong> Infinite distance, parallel rays. Used for sun/moon.
+            Supports shadow mapping.
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>Point:</strong> Omnidirectional from single point. Attenuation with
+            constant/linear/quadratic terms.
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>Spot:</strong> Cone-shaped illumination. innerCutoff/outerCutoff for
+            soft edges. Supports shadows.
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>Area:</strong> Rectangular light source. areaRight/areaUp vectors
+            define orientation. areaWidth/areaHeight for dimensions.
+        </p>
+
+        <h2 id="graphics-gizmos" class="devlog-section">Transformation Gizmos</h2>
+        <p class="devlog-text level-2">
+            Blender-style 3D gizmos for object manipulation. Screen-space picking
+            with axis-constrained dragging.
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>Translate:</strong> Colored arrows (X=red, Y=green, Z=blue).
+            Drag to move objects along axes.
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>Rotate:</strong> Circular rings for each axis. Rotation arc
+            visualization with angle display.
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>Scale:</strong> Cube handles on axes. Uniform scaling via
+            universal handle.
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>Picking:</strong> distanceToLineScreen() for arrows,
+            distanceToCircleScreen() for rings. 12-pixel pick radius.
         </p>
     </div>
 
     <hr class="devlog-divider">
 
     <div class="tree-block">
-        <h2 id="future" class="devlog-root">Future plans</h2>
+        <h2 id="ui-system-root" class="devlog-root">UI System</h2>
         <p class="devlog-lead level-1">
-            Roadmap for the upcoming quarters and experimental features.
+            Custom immediate-mode UI inspired by Dear ImGui.
         </p>
 
-        <h2 class="devlog-section">Scripting</h2>
+        <h2 id="ui-architecture" class="devlog-section">Architecture</h2>
         <p class="devlog-text level-2">
-            Planning to integrate Lua for high-level gameplay logic to separate
-            engine code from game mechanics.
+            UIManager is a singleton that handles all UI rendering using OpenGL
+            immediate-mode primitives (glBegin/glEnd style with GLUT bitmap fonts).
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>UIRect:</strong> x, y, w, h with contains() hit testing
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>UIColor:</strong> RGBA with fromHex() helper and lerp() interpolation
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>Theme:</strong> Dark ImGui-style colors (bgMain=#1A1A1A, bgChild=#252525,
+            accent=#4A90D9, textNormal=#E0E0E0)
+        </p>
+
+        <h2 id="ui-panels" class="devlog-section">Panels & Widgets</h2>
+        <p class="devlog-text level-2">
+            Draggable, resizable panels with collapse/expand functionality.
+            Each panel has a title bar with close button.
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>Debug Panel (F1):</strong> FPS counter, frame timing stats,
+            GPU info, render stats, SSAO settings
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>Scene Panel:</strong> Grid toggle, gizmo visibility, wireframe mode,
+            global ambient light slider
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>Camera Panel:</strong> Camera speed, rotation speed, locked state,
+            position/rotation displays
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>Light Editor (P):</strong> Light list, add/delete lights,
+            property editing (color, intensity, attenuation, shadows)
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>Performance Panel:</strong> Min/max/avg frame times,
+            GPU time queries, draw call counts
+        </p>
+
+        <h2 id="ui-interaction" class="devlog-section">Interaction</h2>
+        <p class="devlog-text level-2">
+            Mouse-driven interaction with hover/active states.
+            Panel dragging via title bar, resizing via bottom-right corner.
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>Top Bar:</strong> Menu dropdowns with keyboard shortcuts
+            displayed (e.g., "Save [Ctrl+S]")
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>Context Menus:</strong> Right-click popup menus with
+            submenu support
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>Widgets:</strong> Checkboxes, sliders with drag input,
+            toggle buttons, color pickers
+        </p>
+    </div>
+
+    <hr class="devlog-divider">
+
+    <div class="tree-block">
+        <h2 id="future" class="devlog-root">Future Plans</h2>
+        <p class="devlog-lead level-1">
+            Roadmap for v1.1 and beyond.
+        </p>
+
+        <h2 id="future-v11" class="devlog-section">Version 1.1 — Enhancement</h2>
+        <p class="devlog-text level-2">
+            Focus on gameplay systems and visual effects.
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>Physics Integration:</strong> Bullet Physics or NVIDIA PhysX
+            for rigid body dynamics and collision detection
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>Particle System:</strong> GPU compute shader particles
+            for fire, smoke, explosions with custom emitters
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>Skeletal Animation:</strong> Assimp integration for
+            bone-based character animation with keyframe blending
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>Terrain Rendering:</strong> Heightmap-based terrain
+            with LOD geomorphing and texture splatting
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>Water System:</strong> Reflection/refraction textures,
+            Fresnel shading, caustics projection
+        </p>
+
+        <h2 id="future-v12" class="devlog-section">Version 1.2 — Expansion</h2>
+        <p class="devlog-text level-2">
+            Advanced features and platform support.
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>VR Support:</strong> OpenXR integration for stereo
+            rendering and motion controller input
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>Vulkan Backend:</strong> Alternative rendering path
+            using Vulkan API for improved performance
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>macOS Support:</strong> Cross-platform builds for
+            Apple Silicon and Intel Macs
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>Asset Pipeline:</strong> FBX/glTF importers, automated
+            texture compression, material presets
+        </p>
+
+        <h2 id="future-v20" class="devlog-section">Version 2.0 — Complete Editor</h2>
+        <p class="devlog-text level-2">
+            Full game development environment.
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>Lua Scripting:</strong> Embedded Lua VM for
+            high-level game logic separation
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>Audio Engine:</strong> FMOD or Wwise integration
+            with 3D spatial audio
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>Networking:</strong> Client-server architecture
+            for multiplayer game support
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>Visual Scripting:</strong> Node-based programming
+            interface for designers
+        </p>
+
+        <p class="devlog-text level-3">
+            <strong>Animation Editor:</strong> Timeline-based animation
+            editing with blend trees
         </p>
     </div>
 
@@ -160,15 +556,26 @@
         <pre class="tree-pre">
 <a href="#devlog-root">Devlog</a>
 ├── <a href="#intro">Introduction</a>
-├── <a href="#engine-root">Engine</a>
-│   ├── <a href="#engine-structure">Project structure</a>
-│   ├── <a href="#engine-build">Build system</a>
+├── <a href="#engine-root">Engine Architecture</a>
+│   ├── <a href="#engine-structure">Project Structure</a>
+│   ├── <a href="#engine-singletons">Singleton Managers</a>
+│   ├── <a href="#engine-build">Build System</a>
 │   └── <a href="#engine-deps">Dependencies</a>
-├── <a href="#graphics-root">Graphics</a>
-│   ├── <a href="#graphics-opengl">OpenGL</a>
-│   └── <a href="#graphics-assets">Assets</a>
-└── <a href="#future">Future plans</a>
-    </pre>
+├── <a href="#graphics-root">Graphics & Rendering</a>
+│   ├── <a href="#graphics-pipeline">Rendering Pipeline</a>
+│   ├── <a href="#graphics-shaders">Shader Programs</a>
+│   ├── <a href="#graphics-ssao">SSAO Configuration</a>
+│   ├── <a href="#graphics-lighting">Lighting System</a>
+│   └── <a href="#graphics-gizmos">Transformation Gizmos</a>
+├── <a href="#ui-system-root">UI System</a>
+│   ├── <a href="#ui-architecture">Architecture</a>
+│   ├── <a href="#ui-panels">Panels & Widgets</a>
+│   └── <a href="#ui-interaction">Interaction</a>
+└── <a href="#future">Future Plans</a>
+    ├── <a href="#future-v11">v1.1 Enhancement</a>
+    ├── <a href="#future-v12">v1.2 Expansion</a>
+    └── <a href="#future-v20">v2.0 Complete Editor</a>
+        </pre>
     </div>
 
 </body>
