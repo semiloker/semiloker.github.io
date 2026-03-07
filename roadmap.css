@@ -189,6 +189,31 @@
     top: 160px;
 }
 
+#epic-ssao {
+    left: 400px;
+    top: 160px;
+}
+
+#epic-ui {
+    left: 80px;
+    top: 160px;
+}
+
+#epic-gizmo {
+    left: 400px;
+    top: 220px;
+}
+
+#epic-camera {
+    left: 80px;
+    top: 220px;
+}
+
+#epic-future {
+    left: 600px;
+    top: 220px;
+}
+
 /* connection lines */
 
 .connections {
