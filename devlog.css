@@ -39,6 +39,7 @@
     display: flex;
     justify-content: flex-end;
     pointer-events: auto;
+    z-index: 999;
 }
 
 .tree-pre {

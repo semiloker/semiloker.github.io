@@ -1,35 +1,39 @@
+/* Base styles - shared across all pages */
+
 body {
     font-family: "Times New Roman", serif;
-    margin-left: 0px;
-    margin-top: 0px;
+    margin-left: 60px;
+    margin-top: 38px;
     background-color: rgb(24, 14, 11);
     display: flex;
     flex-direction: column;
+}
 
-    position: relative;
-    min-height: 100vh;
+#dither-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    pointer-events: auto;
 }
 
 .body_for_head {
     position: fixed;
     left: 0px;
     top: 0px;
-    height: 23px;
+    height: 21px;
     width: 34px;
     background-color: rgb(37, 39, 40);
-    z-index: 10;
+    z-index: 1000;
 }
 
 .line-numbers {
     position: absolute;
-
-    top: 0;
-    padding-top: 32px;
+    top: 21px;
     left: 0;
     width: 24px;
-
-    height: 100%;
-
     background-color: rgb(37, 39, 40);
     color: rgb(100, 111, 114);
     font-size: 12px;
@@ -37,9 +41,17 @@ body {
     text-align: right;
     padding-right: 10px;
     user-select: none;
-    z-index: 9;
+    z-index: 998;
+}
 
-    overflow: hidden;
+.line-numbers-bg {
+    position: absolute;
+    top: 21px;
+    left: 0;
+    width: 34px;
+    height: 100%;
+    background-color: rgb(37, 39, 40);
+    z-index: 997;
 }
 
 a {
@@ -56,15 +68,40 @@ a:hover {
     color: rgb(215, 114, 97);
 }
 
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 34px;
+    width: 100%;
+    background-color: rgb(37, 39, 40);
+    display: flex;
+    justify-content: left;
+    gap: 0px;
+    z-index: 1000;
+}
+
+.nav-btn {
+    background-color: rgb(37, 39, 40);
+    color: rgb(100, 111, 114);
+    border: none;
+    padding: 4px 20px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.1s, transform 0.1s;
+}
+
+.nav-btn:hover {
+    background-color: rgb(46, 52, 54);
+}
+
 h1 {
     color: white;
-    text-align: center;
+    text-align: left;
     margin-left: 100px;
     margin-top: 80px;
     max-width: 350px;
     font-weight: 100;
 }
-
 
 h2 {
     color: white;
@@ -82,30 +119,4 @@ p {
     max-width: 400px;
     margin-left: 100px;
     text-align: justify;
-}
-
-.navbar {
-    position: fixed;
-    top: 0;
-    left: 34px;
-    width: 100%;
-    background-color: rgb(37, 39, 40);
-    display: flex;
-    justify-content: left;
-    gap: 0px;
-    z-index: 10;
-}
-
-.nav-btn {
-    background-color: rgb(37, 39, 40);
-    color: rgb(100, 111, 114);
-    border: none;
-    padding: 4px 20px;
-    font-size: 12px;
-    cursor: pointer;
-    transition: background-color 0.1s, transform 0.1s;
-}
-
-.nav-btn:hover {
-    background-color: rgb(46, 52, 54);
 }
