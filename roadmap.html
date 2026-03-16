@@ -3,13 +3,15 @@
 
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="body.css">
+    <link rel="stylesheet" href="base.css">
     <link rel="stylesheet" href="roadmap.css">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <title>semiloker.com/roadmap</title>
 </head>
 
 <body>
+    <!-- <canvas id="dither-bg"></canvas> -->
+
     <div class="body_for_head"></div>
     <div class="line-numbers">
         1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>
@@ -17,17 +19,19 @@
         21<br>22<br>23<br>24<br>25<br>26<br>27<br>28<br>29<br>30<br>
         31<br>32<br>33<br>34<br>35<br>36<br>37<br>38<br>39<br>40<br>41<br>42<br>43<br>44
     </div>
+    <div class="line-numbers-bg"></div>
 
     <div class="navbar">
         <a href="home.html" class="nav-btn">Home</a>
         <a href="about.html" class="nav-btn">About</a>
         <a href="devlog.html" class="nav-btn">Devlog</a>
         <a href="roadmap.html" class="nav-btn">Roadmap</a>
+        <a href="my_setup.html" class="nav-btn">Setup</a>
     </div>
 
     <div class="construction-container">
-        <h1>// roadmap. (under construction)</h1>
-        <h1 class="build-state">// build state: experimental</h1>
+        <h1>// roadmap. Pixora Engine</h1>
+        <h1 class="build-state">// build state: v0.0.01</h1>
     </div>
 
     <div class="roadmap-stats" id="roadmapStats">
@@ -54,138 +58,361 @@
 
     <div class="terminal-block">
         <p class="terminal-text">
-            <span class="terminal-prefix">&gt;</span>version : 0.0.0-dev
+            <span class="terminal-prefix">&gt;</span>version : 1.0.0
         </p>
         <p class="terminal-text">
-            <span class="terminal-prefix">&gt;</span>last update : unknown
+            <span class="terminal-prefix">&gt;</span>last update : March 2026
         </p>
     </div>
-
-    <!-- <hr class="devlog-divider-bottom"> -->
 
     <div class="roadmap-wrapper">
         <div class="roadmap-canvas" id="roadmapCanvas">
             <div class="tree-roadmap">
 
-                <!-- PHASE 1 -->
-                <div class="tree-task" id="epic-core" data-status="planned"
-                    data-description="The foundation of the engine. Handling OS interaction, memory, and the main loop.">
+                <!-- PHASE 1: CORE ENGINE -->
+                <div class="tree-task" id="epic-core" data-status="done"
+                    data-description="The foundation of Pixora engine. Window management, input handling, and main game loop.">
 
-                    [ Engine Core ]
+                    [ 1. Engine Core ] 
 
                     <div class="tree-subtasks">
 
-                        <div class="tree-subtask" id="sub-core-1" data-status="planned"
-                            data-description="Setup C++ project. Link GLEW (static), FreeGLUT, and OpenGL32.lib. create main.cpp.">
-                            |- Project & Libs Setup
+                        <div class="tree-subtask" id="sub-core-1" data-status="done"
+                            data-description="Windows/MinGW build setup. GLEW 2.1.0, FreeGLUT 3.6.0, GLM integrated. makefile with clean/fullclean targets.">
+                            |- Build System (makefile)
                         </div>
 
-                        <div class="tree-subtask" id="sub-core-2" data-status="planned"
-                            data-description="Initialize GLUT context, create a window (800x600), set DisplayMode (RGBA | DOUBLE | DEPTH).">
-                            |- Window Context
+                        <div class="tree-subtask" id="sub-core-2" data-status="done"
+                            data-description="Window class (1280x720 default). GLUT context with RGBA, DOUBLE, DEPTH buffers. Title: 'The void of Pixora...'">
+                            |- Window Context (GLUT)
                         </div>
 
-                        <div class="tree-subtask" id="sub-core-3" data-status="planned"
-                            data-description="Create an Input Manager class. Abstract glutKeyboardFunc to store key states (isKeyPressed array).">
+                        <div class="tree-subtask" id="sub-core-3" data-status="done"
+                            data-description="Keyboard: glutKeyboardFunc/ glutSpecialFunc. Mouse: motion, wheel, buttons. Camera: WASD + arrows + scroll.">
                             |- Input System
                         </div>
 
+                        <div class="tree-subtask" id="sub-core-4" data-status="done"
+                            data-description="Delta time calculation, FPS counter, frame timing with std::chrono. VSync toggle support.">
+                            |- Frame Timing & FPS
+                        </div>
+
                     </div>
                 </div>
 
 
-                <!-- PHASE 2 -->
-                <div class="tree-task" id="epic-render" data-status="planned"
-                    data-description="Abstracting raw OpenGL calls into reusable classes. Building the pipeline.">
+                <!-- PHASE 2: RENDERING BACKEND -->
+                <div class="tree-task" id="epic-render" data-status="done"
+                    data-description="Modern OpenGL rendering pipeline with dual-mode support (Legacy/Shader).">
 
-                    [ Rendering Backend ]
+                    [ 2. Rendering Backend ] 
 
                     <div class="tree-subtasks">
 
-                        <div class="tree-subtask" id="sub-ren-1" data-status="progress"
-                            data-description="Create Shader Class. Load .vert/.frag files, compile source, link program, check errors.">
-                            |- Shader Wrapper
+                        <div class="tree-subtask" id="sub-ren-1" data-status="done"
+                            data-description="ShaderProgram struct: compile(), setMat4(), setVec3(), uniform management. SSAOShaderProgram for post-processing passes.">
+                            |- Shader Manager
                         </div>
 
                         <div class="tree-subtask" id="sub-ren-2" data-status="done"
-                            data-description="Create Mesh Class. Manage VBO (Vertex Data), VAO (Attributes), and EBO (Indices).">
-                            |- Mesh & Buffers
+                            data-description="GPUMesh with VAO/VBO/EBO. GPUSubMesh per material. Vertex layout: position(3) + normal(3) + texcoord(2).">
+                            |- GPU Mesh System
                         </div>
 
-                        <div class="tree-subtask" id="sub-ren-3" data-status="planned"
-                            data-description="Implement Texture Class. Load images (stb_image), generate TextureID, handle wrapping/filtering.">
+                        <div class="tree-subtask" id="sub-ren-3" data-status="done"
+                            data-description="stb_image for loading. Diffuse, normal, metalness maps. Texture caching by filepath. Mipmapping support.">
                             |- Texture Loader
                         </div>
 
-                    </div>
-                </div>
-
-
-                <!-- PHASE 3 -->
-                <div class="tree-task" id="epic-math" data-status="planned"
-                    data-description="Moving from 2D screen coordinates to 3D world space using Linear Algebra.">
-
-                    [ 3D Math & Space ]
-
-                    <div class="tree-subtasks">
-
-                        <div class="tree-subtask" id="sub-math-1" data-status="planned"
-                            data-description="Integrate GLM. Implement Model-View-Projection (MVP) matrices in Vertex Shader.">
-                            |- Matrices & Uniforms
-                        </div>
-
-                        <div class="tree-subtask" id="sub-math-2" data-status="planned"
-                            data-description="Create Camera Class (FPS Style). Calculate Euler Angles (Pitch/Yaw) from mouse movement.">
-                            |- Camera Controller
+                        <div class="tree-subtask" id="sub-ren-4" data-status="done"
+                            data-description="Toggle between Legacy (immediate) and Shader (VAO/VBO) modes. RenderMode enum with runtime switching.">
+                            |- Dual Render Modes
                         </div>
 
                     </div>
                 </div>
 
 
-                <!-- PHASE 4 -->
-                <div class="tree-task" id="epic-light" data-status="planned"
-                    data-description="Simulating light behavior to create realism and depth.">
+                <!-- PHASE 3: MODEL LOADING -->
+                <div class="tree-task" id="epic-models" data-status="done"
+                    data-description="OBJ/MTL file parsing with multi-material and texture support.">
 
-                    [ Lighting System ]
+                    [ 3. Model Loading ] 
 
                     <div class="tree-subtasks">
 
-                        <div class="tree-subtask" id="sub-light-1" data-status="planned"
-                            data-description="Implement Phong Lighting Model (Ambient + Diffuse + Specular) in shaders.">
-                            |- Basic Phong Model
+                        <div class="tree-subtask" id="sub-mod-1" data-status="done"
+                            data-description="Parse v, vn, vt, f statements. Vertex hashing for deduplication. Index buffer generation.">
+                            |- OBJ Parser
                         </div>
 
-                        <div class="tree-subtask" id="sub-light-2" data-status="planned"
-                            data-description="Create Material Struct in shader. Define properties like shininess, diffuse map, specular map.">
-                            |- Material System
+                        <div class="tree-subtask" id="sub-mod-2" data-status="done"
+                            data-description="Parse newmtl, Ka, Kd, Ks, Ns, d, map_Kd. Material indexing per face. SubMesh per material.">
+                            |- MTL Material System
                         </div>
 
-                        <div class="tree-subtask" id="sub-light-3" data-status="planned"
-                            data-description="Support different light casters: Directional Light (Sun), Point Lights (Bulbs), Spotlights (Flashlight).">
-                            |- Light Casters
+                        <div class="tree-subtask" id="sub-mod-3" data-status="done"
+                            data-description="ModelInstance with transform (pos, rot, scale). Instance rendering with model matrix. Name-based lookup.">
+                            |- Instance Management
+                        </div>
+
+                        <div class="tree-subtask" id="sub-mod-4" data-status="done"
+                            data-description="Bounding box calculation (minX/maxX, etc.). Used for selection, gizmo placement, and frustum culling (future).">
+                            |- Bounding Box
                         </div>
 
                     </div>
                 </div>
 
 
-                <!-- PHASE 5 -->
-                <div class="tree-task" id="epic-ui" data-status="planned"
-                    data-description="User Interface and advanced rendering techniques.">
+                <!-- PHASE 4: LIGHTING SYSTEM -->
+                <div class="tree-task" id="epic-light" data-status="done"
+                    data-description="Advanced lighting with 4 light types and real-time editing via gizmos.">
 
-                    [ UI & Advanced ]
+                    [ 4. Lighting System ] 
 
                     <div class="tree-subtasks">
 
-                        <div class="tree-subtask" id="sub-ui-1" data-status="planned"
-                            data-description="Implement Shadow Mapping. Render scene to Depth Map Framebuffer, then project shadows in second pass.">
-                            |- Shadow Mapping
+                        <div class="tree-subtask" id="sub-light-1" data-status="done"
+                            data-description="LightType enum: Directional, Point, Spot, Area. SceneLight struct with position, direction, color, intensity.">
+                            |- Light Types
                         </div>
 
-                        <div class="tree-subtask" id="sub-ui-2" data-status="planned"
-                            data-description="Basic Text Rendering (FreeType) or 2D Orthographic overlay for FPS counter and debug info.">
-                            |- Text & UI Overlay
+                        <div class="tree-subtask" id="sub-light-2" data-status="done"
+                            data-description="constant, linear_k, quadratic attenuation. innerCutoff/outerCutoff for spots. Area lights with width/height.">
+                            |- Light Properties
+                        </div>
+
+                        <div class="tree-subtask" id="sub-light-3" data-status="done"
+                            data-description="LightManager singleton. addLight(), removeLight(), getLight(). Legacy LightConfig for backward compatibility.">
+                            |- Light Manager
+                        </div>
+
+                        <div class="tree-subtask" id="sub-light-4" data-status="done"
+                            data-description="Light selection via mouse picking. Light panel with property editing. Add/delete lights dynamically.">
+                            |- Light Editor UI
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <!-- PHASE 5: SHADOW MAPPING -->
+                <div class="tree-task" id="epic-shadows" data-status="done"
+                    data-description="Real-time shadow mapping for directional and spot lights.">
+
+                    [ 5. Shadow Mapping ] 
+
+                    <div class="tree-subtasks">
+
+                        <div class="tree-subtask" id="sub-shad-1" data-status="done"
+                            data-description="FBOManager singleton. Shadow FBO (2048x2048 depth texture). Render FBO for off-screen passes.">
+                            |- FBO Manager
+                        </div>
+
+                        <div class="tree-subtask" id="sub-shad-2" data-status="done"
+                            data-description="Depth shader: light-space MVP transformation. Depth-only render pass from light perspective.">
+                            |- Depth Pass Shader
+                        </div>
+
+                        <div class="tree-subtask" id="sub-shad-3" data-status="done"
+                            data-description="Shadow comparison in main fragment shader. shadowNear/shadowFar configuration. Shadow radius control.">
+                            |- Shadow Sampling
+                        </div>
+
+                        <div class="tree-subtask" id="sub-shad-4" data-status="in_progress"
+                            data-description="Percentage-Closer Filtering (PCF). Cascaded shadow maps for directional lights. Soft shadow edges.">
+                            |- Shadow Improvements (TODO)
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <!-- PHASE 6: SSAO POST-PROCESSING -->
+                <div class="tree-task" id="epic-ssao" data-status="done"
+                    data-description="Screen-Space Ambient Occlusion with multi-pass rendering and configurable parameters.">
+
+                    [ 6. SSAO System ] 
+
+                    <div class="tree-subtasks">
+
+                        <div class="tree-subtask" id="sub-ssao-1" data-status="done"
+                            data-description="Geometry pass: render world-space normals + view-space depth to FBO. Half-resolution output for performance.">
+                            |- Geometry Pass
+                        </div>
+
+                        <div class="tree-subtask" id="sub-ssao-2" data-status="done"
+                            data-description="Random sample kernel (32 samples). Hemisphere sampling around normals. Depth comparison with bias.">
+                            |- SSAO Compute Shader
+                        </div>
+
+                        <div class="tree-subtask" id="sub-ssao-3" data-status="done"
+                            data-description="Edge-aware bilateral filter. depthSigma and colorSigma parameters. Preserves depth edges while smoothing noise.">
+                            |- Blur Pass
+                        </div>
+
+                        <div class="tree-subtask" id="sub-ssao-4" data-status="done"
+                            data-description="Depth-aware and joint bilateral upsampling. Reconstruct full-res SSAO from half-res buffer.">
+                            |- Upsample Pass
+                        </div>
+
+                        <div class="tree-subtask" id="sub-ssao-5" data-status="done"
+                            data-description="SSAOConfig struct: enabled, radius, bias, scale, kernelSize. Debug view with 4-panel comparison.">
+                            |- SSAO Configuration
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <!-- PHASE 7: UI SYSTEM -->
+                <div class="tree-task" id="epic-ui" data-status="done"
+                    data-description="Custom immediate-mode UI system inspired by Dear ImGui.">
+
+                    [ 7. UI System ] 
+
+                    <div class="tree-subtasks">
+
+                        <div class="tree-subtask" id="sub-ui-1" data-status="done"
+                            data-description="UIManager singleton. UIRect, UIColor, UIElementType. Top bar, context menus, panels, buttons, sliders, checkboxes.">
+                            |- UI Manager
+                        </div>
+
+                        <div class="tree-subtask" id="sub-ui-2" data-status="done"
+                            data-description="Dark theme (ImGui-style). bgMain, bgChild, accent, border colors. Hover/active/disabled states.">
+                            |- Theme System
+                        </div>
+
+                        <div class="tree-subtask" id="sub-ui-3" data-status="done"
+                            data-description="Draggable, resizable panels. Panel collapse/expand. Close buttons. Scroll support.">
+                            |- Panel System
+                        </div>
+
+                        <div class="tree-subtask" id="sub-ui-4" data-status="done"
+                            data-description="Debug Panel (F1): render stats, GPU info, SSAO settings. Scene Panel: grid, gizmos, wireframe toggles.">
+                            |- Debug & Scene Panels
+                        </div>
+
+                        <div class="tree-subtask" id="sub-ui-5" data-status="done"
+                            data-description="Light Editor (P): light list, property editing, add/delete lights. Color pickers, sliders, checkboxes.">
+                            |- Light Editor Panel
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <!-- PHASE 8: TRANSFORMATION GIZMOS -->
+                <div class="tree-task" id="epic-gizmo" data-status="done"
+                    data-description="Blender-style 3D transformation gizmos for object manipulation.">
+
+                    [ 8. Gizmo System ] 
+
+                    <div class="tree-subtasks">
+
+                        <div class="tree-subtask" id="sub-giz-1" data-status="done"
+                            data-description="GizmoMode enum: Translate, Rotate, Scale. GizmoAxis enum: None, X, Y, Z, Universal. Mode switching (1/2/3 keys).">
+                            |- Gizmo Modes
+                        </div>
+
+                        <div class="tree-subtask" id="sub-giz-2" data-status="done"
+                            data-description="Screen-space picking. distanceToLineScreen(), distanceToCircleScreen(). Project world to screen coordinates.">
+                            |- Mouse Picking
+                        </div>
+
+                        <div class="tree-subtask" id="sub-giz-3" data-status="done"
+                            data-description="Axis-constrained dragging. World-space delta calculation. Model instance transform updates.">
+                            |- Transform Dragging
+                        </div>
+
+                        <div class="tree-subtask" id="sub-giz-4" data-status="done"
+                            data-description="Rotation arcs (32 segments). Angle display. translationHandleSize. ringThickness. highlightThickness.">
+                            |- Visual Feedback
+                        </div>
+
+                        <div class="tree-subtask" id="sub-giz-5" data-status="done"
+                            data-description="Color scheme: X=red, Y=green, Z=blue, Universal=white, Highlight=yellow. Dimmed inactive axes.">
+                            |- Gizmo Colors
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <!-- PHASE 9: CAMERA & SCENE -->
+                <div class="tree-task" id="epic-camera" data-status="done"
+                    data-description="Free-fly camera with model selection and scene management.">
+
+                    [ 9. Camera & Scene ] 
+
+                    <div class="tree-subtasks">
+
+                        <div class="tree-subtask" id="sub-cam-1" data-status="done"
+                            data-description="WASD movement, arrow key rotation, scroll zoom. camSpeed, camRotSpeed configuration. Camera locked state.">
+                            |- Free-Fly Camera
+                        </div>
+
+                        <div class="tree-subtask" id="sub-cam-2" data-status="done"
+                            data-description="Mouse ray casting for model selection. Bounding box intersection. Selected model highlighting.">
+                            |- Model Selection
+                        </div>
+
+                        <div class="tree-subtask" id="sub-cam-3" data-status="done"
+                            data-description="Grid rendering (showGrid). Wireframe mode (B key). Global ambient light control.">
+                            |- Scene Visualization
+                        </div>
+
+                        <div class="tree-subtask" id="sub-cam-4" data-status="done"
+                            data-description="View/Projection matrix calculation. lastViewProjMatrix for gizmo. worldToScreen() for labels.">
+                            |- Camera Matrices
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <!-- PHASE 10: FUTURE FEATURES -->
+                <div class="tree-task" id="epic-future" data-status="planned"
+                    data-description="Planned features for v1.1 and beyond.">
+
+                    [ 10. Future Features ] ◌
+
+                    <div class="tree-subtasks">
+
+                        <div class="tree-subtask" id="sub-fut-1" data-status="planned"
+                            data-description="Bullet Physics or NVIDIA PhysX integration. Rigid body dynamics. Collision detection.">
+                            |- Physics Engine
+                        </div>
+
+                        <div class="tree-subtask" id="sub-fut-2" data-status="planned"
+                            data-description="GPU particle system. Compute shader updates. Fire, smoke, explosion effects.">
+                            |- Particle System
+                        </div>
+
+                        <div class="tree-subtask" id="sub-fut-3" data-status="planned"
+                            data-description="Assimp integration. Skeletal animation with bone transforms. Keyframe interpolation.">
+                            |- Skeletal Animation
+                        </div>
+
+                        <div class="tree-subtask" id="sub-fut-4" data-status="planned"
+                            data-description="Heightmap terrain. LOD with geomorphing. Texture splatting. Grass/vegetation placement.">
+                            |- Terrain System
+                        </div>
+
+                        <div class="tree-subtask" id="sub-fut-5" data-status="planned"
+                            data-description="Bloom, tone mapping (ACES), color grading, vignette, chromatic aberration. Post-process stack.">
+                            |- Post-Processing Stack
+                        </div>
+
+                        <div class="tree-subtask" id="sub-fut-6" data-status="planned"
+                            data-description="OpenXR integration. Stereo rendering. VR controller input. Motion controller gizmos.">
+                            |- VR Support
+                        </div>
+
+                        <div class="tree-subtask" id="sub-fut-7" data-status="planned"
+                            data-description="Vulkan backend. RenderDoc integration. NVIDIA Nsight debugging. GPU profiling.">
+                            |- Vulkan & Profiling
                         </div>
 
                     </div>
@@ -197,109 +424,9 @@
 
 </body>
 
-<script>
-    function generateBar(percent, totalBlocks = 10) {
-
-        const filled = Math.round((percent / 100) * totalBlocks);
-        const empty = totalBlocks - filled;
-
-        const bar =
-            "█".repeat(filled) +
-            "░".repeat(empty);
-
-        return `[${bar}] ${percent}%`;
-    }
-
-    function updateRoadmapStats() {
-
-        const nodes = document.querySelectorAll(".tree-subtask");
-
-        let done = 0;
-        let progress = 0;
-        let planned = 0;
-
-        nodes.forEach(node => {
-
-            const status = node.dataset.status;
-
-            if (status === "done") done++;
-            else if (status === "progress") progress++;
-            else planned++;
-        });
-
-        const total = nodes.length || 1;
-
-        const donePercent = Math.round((done / total) * 100);
-        const progressPercent = Math.round((progress / total) * 100);
-        const plannedPercent = Math.round((planned / total) * 100);
-
-        document.getElementById("stat-done").textContent =
-            generateBar(donePercent);
-
-        document.getElementById("stat-progress").textContent =
-            generateBar(progressPercent);
-
-        document.getElementById("stat-planned").textContent =
-            generateBar(plannedPercent);
-    }
-
-    updateRoadmapStats();
-</script>
-
-<script>
-    const tooltip = document.createElement("div");
-    tooltip.className = "node-tooltip";
-    document.body.appendChild(tooltip);
-
-    document.querySelectorAll(".tree-subtask").forEach(subtask => {
-
-        subtask.addEventListener("mouseenter", () => {
-
-            const title = subtask.textContent.replace("|-", "").trim();
-            const status = subtask.dataset.status || "unknown";
-            const notes = subtask.dataset.description || "—";
-
-            // знайти parent tree-task
-            const parentTask = subtask.closest(".tree-task");
-            const depends = parentTask
-                ? parentTask.firstChild.textContent.trim()
-                : "—";
-
-            tooltip.innerHTML = `
-            <div class="tooltip-title">${title}</div>
-
-            <div class="tooltip-row">
-                <span class="tooltip-label">Status:</span>
-                <span>${status}</span>
-            </div>
-
-            <div class="tooltip-row">
-                <span class="tooltip-label">Depends:</span>
-                <span>${depends}</span>
-            </div>
-
-            <div class="tooltip-divider"></div>
-
-            <div class="tooltip-row">
-                <span class="tooltip-label">Notes:</span>
-            </div>
-
-            <div class="tooltip-notes">${notes}</div>
-        `;
-
-            tooltip.classList.add("show");
-        });
-
-        subtask.addEventListener("mousemove", e => {
-            tooltip.style.left = e.clientX + 18 + "px";
-            tooltip.style.top = e.clientY + 18 + "px";
-        });
-
-        subtask.addEventListener("mouseleave", () => {
-            tooltip.classList.remove("show");
-        });
-
-    });
-</script>
-
+    <script src="roadmap.js"></script>
+    <script src="roadmap-tooltips.js"></script>
+    <script src="line-numbers.js"></script>
+    <script src="line-numbers-bg.js"></script>
+    <!-- <script type="module" src="bg.js"></script> -->
 </html>
