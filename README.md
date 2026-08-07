@@ -7,7 +7,8 @@ Personal portfolio and devlog site hosted on Discloud.
 - `home.html` - Main landing page
 - `about.html` - About me / whoami
 - `devlog.html` - Development log for Pixora Engine
-- `roadmap.html` - Feature roadmap
+- `css/` - Stylesheets
+- `js/` - Scripts
 
 ## Deploy to Discloud
 
