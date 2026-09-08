@@ -21,12 +21,12 @@ first row — the way an editor does it.
 |---|---|
 | `home.html` | Landing page |
 | `about.html` | A shell session: whoami, interests, contact |
-| `base.css` | Page chrome — gutter, navbar, links |
-| `editor.css` | The editor surface, shared by both pages |
-| `editor.js` | Gutter, current line, status bar, boot sequence |
-| `home.css`, `about.css` | Per-page styling |
-| `age.js` | Keeps the age on the about page current |
-| `bg.js` | Dithered WebGL background, currently switched off |
+| `css/base.css` | Page chrome — gutter, navbar, links |
+| `css/editor.css` | The editor surface, shared by both pages |
+| `js/editor.js` | Gutter, current line, status bar, boot sequence |
+| `css/home.css`, `css/about.css` | Per-page styling |
+| `js/age.js` | Keeps the age on the about page current |
+| `js/bg.js` | Dithered WebGL background, currently switched off |
 
 ## Running locally
 
