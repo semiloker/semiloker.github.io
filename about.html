@@ -3,7 +3,9 @@
 
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="editor.css">
     <link rel="stylesheet" href="about.css">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <title>semiloker.com/about</title>
@@ -11,67 +13,72 @@
 
 <body>
     <!-- <canvas id="dither-bg"></canvas> -->
-    <div class="body_for_head"></div>
 
-    <div class="line-numbers">
-        1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>
-        11<br>12<br>13<br>14<br>15<br>16<br>17<br>18<br>19<br>20<br>
-        21<br>22<br>23<br>24<br>25<br>26<br>27<br>28<br>29<br>30<br>
-        31<br>32<br>33<br>34<br>35<br>36<br>37<br>38<br>39<br>40<br>41
-    </div>
+    <div class="body_for_head"></div>
+    <div class="line-numbers"></div>
     <div class="line-numbers-bg"></div>
+    <div class="current-line"></div>
 
     <div class="navbar">
         <a href="home.html" class="nav-btn">Home</a>
         <a href="about.html" class="nav-btn">About</a>
-        <a href="devlog.html" class="nav-btn">Devlog</a>
-        <a href="roadmap.html" class="nav-btn">Roadmap</a>
-        <a href="my_setup.html" class="nav-btn">Setup</a>
     </div>
-    <div class="about-container">
-        <div class="about-block">
-            <pre class="about-pre">
-$ whoami
-------------------------------------
-Name        : Andrew
-Age         : 19
-Birthday    : 01.03.2007
-Location    : Earth / UA
-Status      : alive & curious
-Position    : Embedded Developer
 
-$ interests
-------------------------------------
-• low-level programming
-• graphics (2D / 3D)
-• retro hardware
-<!-- • operating systems
-• UNIX philosophy
+    <main class="doc">
+        <h1 class="doc-title"><span class="rt">About.</span></h1>
 
-$ stack
-----------------------------
-Languages   : C, C++, Python, ASM
-Platforms   : Linux, Arduino, ESP, RPi
-Graphics    : OpenGL, software rendering
-Tools       : gcc, gdb, make, git
+        <div class="prose">
+            <div class="row"><span class="rt"><span class="c">$</span> <span class="s">whoami</span></span></div>
+            <div class="row"><span class="rt"><span class="c">------------------------------------</span></span></div>
+            <div class="row"><span class="rt"><span class="k key">Name</span><span class="c">:</span> Andrew</span></div>
+            <div class="row"><span class="rt"><span class="k key">Age</span><span class="c">:</span> <span class="age">19</span></span></div>
+            <div class="row"><span class="rt"><span class="k key">Birthday</span><span class="c">:</span> 01.03.2007</span></div>
+            <div class="row"><span class="rt"><span class="k key">Location</span><span class="c">:</span> Earth / UA</span></div>
+            <div class="row"><span class="rt"><span class="k key">Status</span><span class="c">:</span> alive &amp; curious</span></div>
+            <div class="row"><span class="rt"><span class="k key">Position</span><span class="c">:</span> Embedded Developer</span></div>
+            <div class="row"></div>
+            <div class="row"><span class="rt"><span class="c">$</span> <span class="s">interests</span></span></div>
+            <div class="row"><span class="rt"><span class="c">------------------------------------</span></span></div>
+            <div class="row"><span class="rt"><span class="c">&bull;</span> low-level programming</span></div>
+            <div class="row"><span class="rt"><span class="c">&bull;</span> graphics (2D / 3D)</span></div>
+            <div class="row"><span class="rt"><span class="c">&bull;</span> retro hardware</span></div>
+            <div class="row"></div>
 
-$ philosophy
-----------------------------
-Minimalism over hype.
-Understanding over abstraction.
-Old tech still has soul.
- -->
-$ contact
-------------------------------------
-GitHub      : <a href="https://github.com/semiloker" target="_blank">github.com/semiloker</a>
-Email       : smlkr1294@gmail.com</pre>
+            <!-- <div class="row"><span class="rt"><span class="c">$</span> <span class="s">stack</span></span></div>
+            <div class="row"><span class="rt"><span class="c">------------------------------------</span></span></div>
+            <div class="row"><span class="rt"><span class="k key">Languages</span><span class="c">:</span> C, C++, Python, ASM</span></div>
+            <div class="row"><span class="rt"><span class="k key">Platforms</span><span class="c">:</span> Linux, Arduino, ESP, RPi</span></div>
+            <div class="row"><span class="rt"><span class="k key">Graphics</span><span class="c">:</span> OpenGL, software rendering</span></div>
+            <div class="row"><span class="rt"><span class="k key">Tools</span><span class="c">:</span> gcc, gdb, make, git</span></div>
+            <div class="row"></div>
+            <div class="row"><span class="rt"><span class="c">$</span> <span class="s">philosophy</span></span></div>
+            <div class="row"><span class="rt"><span class="c">------------------------------------</span></span></div>
+            <div class="row"><span class="rt">Minimalism over hype.</span></div>
+            <div class="row"><span class="rt">Understanding over abstraction.</span></div>
+            <div class="row"><span class="rt">Old tech still has soul.</span></div>
+            <div class="row"></div> -->
+
+            <div class="row"><span class="rt"><span class="c">$</span> <span class="s">contact</span></span></div>
+            <div class="row"><span class="rt"><span class="c">------------------------------------</span></span></div>
+            <div class="row"><span class="rt"><span class="k key">GitHub</span><span class="c">:</span> <a href="https://github.com/semiloker" target="_blank">github.com/semiloker</a></span></div>
+            <div class="row"><span class="rt"><span class="k key">Email</span><span class="c">:</span> smlkr1294@gmail.com</span></div>
+            <div class="row"></div>
+            <div class="row"><span class="rt"><span class="c">$</span> <span class="caret"></span></span></div>
         </div>
-    </div>
+    </main>
+
+    <div class="statusbar">
+        <span class="sb-file">about.html</span>
+        <span class="sb-gap"></span>
+        <span>utf-8</span>
+        <span>LF</span>
+        <span class="sb-pos">Ln 1, Col 1</span>
+        <span class="sb-branch">main</span>
     </div>
 
     <!-- <script type="module" src="bg.js"></script> -->
     <script src="age.js"></script>
-    <script src="line-numbers-bg.js"></script>
+    <script src="editor.js"></script>
 </body>
 
 </html>

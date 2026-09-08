@@ -1,18 +1,19 @@
+/* Keeps the age on the about page current. */
+
 function updateAge() {
-    const birthDate = new Date('2007-03-01');
-    const today = new Date();
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const m = today.getMonth() - birthDate.getMonth();
-    const d = today.getDate() - birthDate.getDate();
-    if (m < 0 || (m === 0 && d < 0)) {
+    const el = document.querySelector('.age');
+    if (!el) return;
+
+    const birth = new Date(2007, 2, 1);   /* local, so the date never slips */
+    const now = new Date();
+
+    let age = now.getFullYear() - birth.getFullYear();
+    const months = now.getMonth() - birth.getMonth();
+    if (months < 0 || (months === 0 && now.getDate() < birth.getDate())) {
         age--;
     }
 
-    const ageElement = Array.from(document.querySelectorAll('.about-pre'))
-        .find(el => el.innerHTML.includes('Age'));
-    if (ageElement) {
-        ageElement.innerHTML = ageElement.innerHTML.replace(/Age\s*:\s*\d+/, `Age         : ${age}`);
-    }
+    el.textContent = age;
 }
 
 document.addEventListener('DOMContentLoaded', updateAge);

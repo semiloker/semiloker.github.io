@@ -1,56 +1,23 @@
-/* About page styles */
+/* About page — a shell session on the editor surface.
+   The surface itself lives in editor.css. */
 
-.about-container {
-    display: flex;
-    gap: 100px;
-    align-items: center;
-    flex: 1;
-    margin-left: 100px;
-    margin-top: 0;
-    min-height: calc(100vh - 80px);
+:root {
+    --doc-row: 1;   /* no wordmark here, so the document starts near the top */
 }
 
-.about-block {
-    max-width: 600px;
+/* The key column is held by a fixed measure rather than padding spaces, so
+   the colons stay aligned even where the line wraps. */
+.doc .key {
+    display: inline-block;
+    width: 12ch;
 }
 
-.about-pre {
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 13px;
-    line-height: 1.6;
-    color: rgb(180, 170, 160);
-    background-color: rgba(0, 0, 0, 0.15);
-    padding: 20px;
-    border-left: 2px solid rgb(70, 70, 70);
-    white-space: pre-wrap;
-    word-break: break-word;
-    margin-left: 90px;
-    margin-top: 80px;
-    padding: 30px 40px;
-    max-width: 800px;
-    border-radius: 20px;
-    border-left: 3px solid rgb(215, 114, 97);
-    position: relative;
-    z-index: 1;
-    transition: opacity 0.26s ease-out;
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(12px) saturate(1.8) brightness(1.2);
-    -webkit-backdrop-filter: blur(12px) saturate(1.8) brightness(1.2);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow:
-        inset 0 1px 0 0 rgba(255, 255, 255, 0.1),
-        inset 0 -1px 0 0 rgba(255, 255, 255, 0.05),
-        0 8px 32px 0 rgba(0, 0, 0, 0.5);
+.doc a {
+    font-size: inherit;
+    opacity: 1;
+    color: var(--rail);
 }
 
-.about-pre.glass-svg-supported {
-    background: transparent;
-    border: none;
-    border-left: 2px solid rgb(70, 70, 70);
-    backdrop-filter: var(--filter-id) saturate(1);
-    -webkit-backdrop-filter: var(--filter-id) saturate(1);
-    box-shadow:
-        0 0 2px 1px rgba(255, 255, 255, 0.05) inset,
-        0 0 10px 4px rgba(255, 255, 255, 0.02) inset,
-        0px 16px 56px rgba(0, 0, 0, 0.5);
+.doc a:hover {
+    color: var(--fg);
 }

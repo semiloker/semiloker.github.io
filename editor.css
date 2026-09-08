@@ -1,0 +1,246 @@
+/* The editor surface — the frame every page is written into.
+
+   Everything vertical sits on a --lh grid anchored to the gutter, so the line
+   numbers on the left address real lines of text rather than decorate them.
+   Page-specific styling lives in the page's own sheet, loaded after this one. */
+
+:root {
+    --lh: 22px;
+    --gutter-top: 21px;      /* navbar height; gutter row 1 starts here */
+    --doc-row: 4;            /* grid row the document begins on, minus one */
+
+    --bg: rgb(24, 14, 11);
+    --chrome: rgb(37, 39, 40);
+
+    --fg: rgb(215, 114, 97);          /* body text */
+    --comment: rgb(112, 96, 89);      /* rules, prompts, punctuation */
+    --string: rgb(191, 160, 106);     /* quoted text, commands */
+    --keyword: rgb(126, 154, 166);    /* the domain vocabulary */
+
+    --gutter-fg: rgb(100, 111, 114);
+    --gutter-fg-on: rgb(196, 186, 178);
+    --rail: rgb(180, 170, 160);
+}
+
+body {
+    margin-top: 0;
+    padding-bottom: calc(var(--lh) * 3);   /* clear the status bar */
+}
+
+/* ---- gutter ------------------------------------------------------- */
+
+.line-numbers {
+    line-height: var(--lh);
+    font-size: 12px;
+}
+
+.line-numbers .gl {
+    height: var(--lh);
+    transition: color 0.12s;
+}
+
+.line-numbers .gl.on {
+    color: var(--gutter-fg-on);
+}
+
+.current-line {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.028);
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.12s;
+}
+
+.current-line.on { opacity: 1; }
+
+/* ---- document ----------------------------------------------------- */
+
+.doc {
+    position: relative;
+    z-index: 1;
+    margin-left: 100px;
+    padding-top: calc(var(--gutter-top) + var(--lh) * var(--doc-row));
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+
+.doc.booting { opacity: 0; }
+
+.doc pre {
+    margin: 0;
+    line-height: var(--lh);
+    font-family: ui-monospace, "Consolas", "DejaVu Sans Mono", monospace;
+}
+
+.doc-title {
+    color: rgb(226, 220, 214);
+    font-family: "Times New Roman", Times, serif;
+    font-weight: 100;
+    font-size: 30px;
+    line-height: calc(var(--lh) * 2);
+    margin: calc(var(--lh) * 2) 0 var(--lh) 0;
+    letter-spacing: 0.01em;
+}
+
+.prose {
+    color: var(--fg);
+    font-size: 14px;
+    line-height: var(--lh);
+    font-family: ui-monospace, "Consolas", "DejaVu Sans Mono", monospace;
+}
+
+/* One element per line of the document, so the cursor can address a real
+   line rather than a band on an abstract grid. A line never wraps here, so
+   its height always matches exactly one row of the gutter. */
+.row {
+    height: var(--lh);
+    white-space: nowrap;
+}
+
+.doc .c { color: var(--comment); }
+.doc .s { color: var(--string); }
+.doc .k { color: var(--keyword); }
+
+.caret::after {
+    content: '_';
+    color: var(--fg);
+    opacity: 0.45;
+    animation: caret-blink 1.15s steps(1) infinite;
+}
+
+@keyframes caret-blink {
+    0%, 55%      { opacity: 0.45; }
+    55.01%, 100% { opacity: 0; }
+}
+
+/* ---- status bar --------------------------------------------------- */
+
+.statusbar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: var(--lh);
+    background: var(--chrome);
+    color: var(--gutter-fg);
+    font-family: ui-monospace, "Consolas", "DejaVu Sans Mono", monospace;
+    font-size: 11px;
+    line-height: var(--lh);
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    padding: 0 14px 0 12px;
+    white-space: nowrap;
+    user-select: none;
+    z-index: 1000;
+}
+
+.statusbar .sb-file { color: var(--gutter-fg-on); }
+.statusbar .sb-gap { margin-left: auto; }
+.statusbar .sb-pos { min-width: 108px; }
+.statusbar .sb-branch::before {
+    content: '\25CF';
+    color: var(--fg);
+    margin-right: 5px;
+}
+
+/* ---- boot sequence ------------------------------------------------ */
+
+.boot {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    z-index: 900;
+    transition: opacity 0.45s ease;
+}
+
+.boot.done { opacity: 0; }
+
+.boot pre {
+    margin: 0;
+    margin-left: 160px;
+    padding-top: calc(var(--gutter-top) + var(--lh) * var(--doc-row));
+    font-family: ui-monospace, "Consolas", "DejaVu Sans Mono", monospace;
+    font-size: 14px;
+    line-height: var(--lh);
+    color: var(--comment);
+}
+
+.boot .ok { color: var(--keyword); }
+
+/* ---- narrow ------------------------------------------------------- */
+
+@media (max-width: 1000px) {
+    /* Lines never wrap above the phone breakpoint, so buy width back from
+       the margins before the page has to scroll sideways. */
+    body { margin-left: 0; }
+    .doc { margin-left: 56px; }
+    .boot pre { margin-left: 56px; }
+}
+
+/* ---- phones ------------------------------------------------------- */
+
+@media (max-width: 640px) {
+    :root { --lh: 20px; }
+
+    /* A narrower gutter; the strip, the navbar and the corner block all
+       have to agree on its width. */
+    .body_for_head { width: 24px; }
+    .line-numbers-bg { width: 24px; }
+    .line-numbers {
+        width: 16px;
+        padding-right: 8px;
+        font-size: 10px;
+    }
+    .navbar { left: 24px; }
+    .nav-btn { padding: 4px 14px; }
+
+    .doc {
+        margin-left: 36px;
+        padding-right: 14px;
+    }
+
+    .boot pre {
+        margin-left: 36px;
+        font-size: 11px;
+    }
+
+    .prose { font-size: 13px; }
+
+    /* Lines soft-wrap here. A wrapped line grows to fit; the gutter gives it
+       one number on its first row and leaves the continuations blank. */
+    .row {
+        height: auto;
+        min-height: var(--lh);
+        white-space: normal;
+    }
+
+    .doc-title {
+        font-size: 24px;
+        line-height: calc(var(--lh) * 2);
+        margin: var(--lh) 0;
+    }
+
+    .statusbar {
+        font-size: 10px;
+        gap: 14px;
+        padding: 0 10px;
+        overflow: hidden;
+    }
+
+    .statusbar .sb-pos { min-width: 0; }
+}
+
+/* Without a pointer there is no cursor to report or to follow. */
+@media (hover: none) {
+    .current-line { display: none; }
+    .statusbar .sb-pos { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .caret::after { animation: none; }
+    .boot { display: none; }
+    .doc.booting { opacity: 1; }
+    .current-line, .line-numbers .gl { transition: none; }
+}

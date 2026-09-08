@@ -1,45 +1,44 @@
 # semiloker.com
 
-Personal portfolio and devlog site hosted on Discloud.
+Personal site. The page behaves like a text editor.
 
-## Structure
+Live at **https://semiloker.github.io**
 
-- `home.html` - Main landing page
-- `about.html` - About me / whoami
-- `devlog.html` - Development log for Pixora Engine
-- `roadmap.html` - Feature roadmap
+## What it is
 
-## Deploy to Discloud
+Static HTML, CSS and a little vanilla JavaScript. No build step, no
+dependencies, no framework.
 
-### Via Discloud CLI
+The layout rests on one idea: the line-number gutter on the left addresses
+real lines of text rather than decorating the page. Everything vertical sits
+on a single grid, the pointer acts as a cursor and the status bar reports
+where it is, and a line that soft-wraps on a phone keeps one number on its
+first row — the way an editor does it.
+
+## Files
+
+| File | |
+|---|---|
+| `home.html` | Landing page |
+| `about.html` | A shell session: whoami, interests, contact |
+| `base.css` | Page chrome — gutter, navbar, links |
+| `editor.css` | The editor surface, shared by both pages |
+| `editor.js` | Gutter, current line, status bar, boot sequence |
+| `home.css`, `about.css` | Per-page styling |
+| `age.js` | Keeps the age on the about page current |
+| `bg.js` | Dithered WebGL background, currently switched off |
+
+## Running locally
+
+Any static server will do:
 
 ```bash
-npm install -g discloud-cli
-discloud login
-discloud deploy
+python -m http.server 8000
 ```
 
-### Via Discloud Web Dashboard
+Then open <http://localhost:8000>.
 
-1. Go to [discloud.app](https://discloud.app)
-2. Sign in / Create account
-3. Click "Upload App"
-4. Upload this entire folder (zip it first)
-5. Discloud will read `discloud.config` automatically
+## Deploying
 
-### Manual Upload
-
-1. Zip all files in this directory
-2. Upload to Discloud dashboard
-3. The app will be configured using `discloud.config`
-
-## Local Testing
-
-Open `index.html` or `home.html` in your browser.
-
-## Tech Stack
-
-- Pure HTML5
-- CSS3 (custom styling)
-- No JavaScript frameworks
-- Static site (no backend)
+GitHub Pages serves the `main` branch from the repository root, so merging
+into `main` publishes. Day-to-day work happens on `developer`.

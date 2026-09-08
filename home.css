@@ -1,34 +1,29 @@
-/* Home page styles */
+/* Home page — the wordmark and the side rail.
+   The editor surface itself lives in editor.css. */
 
-h1 {
-    color: rgb(204, 204, 204);
-    text-align: left;
-    margin-left: 100px;
-    margin-top: 80px;
-    max-width: 350px;
-    text-align: center;
-    font-weight: 100;
+/* The wordmark is art, not text: it keeps its own tight leading so the
+   glyphs touch, and JS scales it to whatever width is available, rounding
+   this box to a whole number of grid rows. */
+.banner-box {
+    overflow: hidden;
+    height: calc(var(--lh) * 5);
 }
 
-h2 {
-    color: white;
-    text-align: left;
+.doc pre.banner {
+    color: var(--comment);
     font-size: 14px;
-    margin-left: 100px;
-    margin-top: 100px;
-    opacity: 0.5;
+    line-height: 1.31;
+    transform-origin: top left;
+    user-select: none;
 }
 
-p {
-    color: rgb(215, 114, 97) ;
-    font-size: 14px;
-    line-height: 1.6;
-    max-width: 400px;
-    margin-left: 100px;
-    text-align: justify;
-}
+/* ---- side rail ---------------------------------------------------- */
+
+/* The rail belongs to the content, not the chrome: it arrives with the doc. */
+.doc.booting ~ .footer { opacity: 0; }
 
 .footer {
+    transition: opacity 0.5s ease;
     position: fixed;
     top: 20%;
     right: 0;
@@ -59,7 +54,7 @@ p {
 }
 
 .footer-links a {
-    color: rgb(180, 170, 160);
+    color: var(--rail);
     text-decoration: none;
     font-size: 12px;
     opacity: 0.7;
@@ -73,7 +68,7 @@ p {
 .footer-links a:hover {
     opacity: 1;
     text-decoration: underline;
-    color: rgb(215, 114, 97);
+    color: var(--fg);
 }
 
 .footer-links a::before,
@@ -85,10 +80,41 @@ p {
     opacity: 0.5;
 }
 
-.footer-links a::before {
-    margin-bottom: 5px;
+.footer-links a::before { margin-bottom: 5px; }
+.footer-links a::after  { margin-top: 5px; }
+
+/* Below the width the fixed rail needs, it rejoins the document flow. */
+@media (max-width: 1150px) {
+    .footer {
+        position: static;
+        height: auto;
+        padding: 0;
+        display: block;
+    }
+
+    .footer-vertical { display: block; height: auto; }
+
+    .footer-links {
+        position: static;
+        transform: none;
+        flex-direction: row;
+        gap: 26px;
+        margin: calc(var(--lh) * 2) 0 0 160px;
+    }
+
+    .footer-links a { display: inline; }
+
+    .footer-links a::before,
+    .footer-links a::after { display: none; }
 }
 
-.footer-links a::after {
-    margin-top: 5px;
+@media (max-width: 1000px) {
+    .footer-links { margin-left: 56px; }
+}
+
+@media (max-width: 640px) {
+    .footer-links {
+        margin-left: 36px;
+        gap: 20px;
+    }
 }

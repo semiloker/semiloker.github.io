@@ -93,30 +93,3 @@ a:hover {
 .nav-btn:hover {
     background-color: rgb(46, 52, 54);
 }
-
-h1 {
-    color: white;
-    text-align: left;
-    margin-left: 100px;
-    margin-top: 80px;
-    max-width: 350px;
-    font-weight: 100;
-}
-
-h2 {
-    color: white;
-    text-align: left;
-    font-size: 14px;
-    margin-left: 100px;
-    margin-top: 100px;
-    scroll-margin-top: 90px;
-}
-
-p {
-    color: rgb(215, 114, 97);
-    font-size: 14px;
-    line-height: 1.6;
-    max-width: 400px;
-    margin-left: 100px;
-    text-align: justify;
-}
